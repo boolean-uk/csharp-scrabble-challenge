@@ -83,12 +83,14 @@ namespace csharp_scrabble_challenge.Main
             // check if the word has curly brackets
             if (charArr[0] == '{' && charArr[charArr.Length - 1] == '}')
             {
+                // double score
                 score *= 2;
             }
 
             // check if the word has square brackets
             if (charArr[0] == '[' && charArr[charArr.Length - 1] == ']')
             {
+                // triple score
                 score *= 3;
             }
 
