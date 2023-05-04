@@ -73,6 +73,16 @@ namespace csharp_scrabble_challenge.Main
                     //    } 
 
                 }
+                else if (_word[i] == '{' && _word[i + 2] =='}')
+                {
+                    result += (values[_word[i+1].ToString()] *2);
+                    i += 2;
+                }
+                else if (_word[i] == '[' && _word[i + 2] == ']')
+                {
+                    result += (values[_word[i+1].ToString()] *3);
+                    i += 2;
+                }
                 else 
                 {
                     result = result;
@@ -83,7 +93,7 @@ namespace csharp_scrabble_challenge.Main
                 result *= 2;
             }
             if (_word.First() == '[' && _word.Last() == ']')
-            //(_word.ToString().StartsWith("[") && _word.ToString().EndsWith("]"))
+            //(_word.First().ToString().StartsWith("[") && _word.Last().ToString().EndsWith("]"))
             {
                 result *= 3;
             }

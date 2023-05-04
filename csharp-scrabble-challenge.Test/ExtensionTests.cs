@@ -13,7 +13,11 @@ namespace csharp_scrabble_challenge.Test
     {
 
         [TestCase("{street}", 12)] //extension double word
-        [TestCase("[street]", 18)] //extension triple word
+        [TestCase("[street]", 18)]
+        [TestCase("st{r}eet", 7)]
+        [TestCase("st[r]eet", 8)]
+        [TestCase("[st[r]eet]", 24)]
+
         [TestCase("{quirky}", 44)] //extension double word
         [TestCase("[quirky]", 66)] //extension triple word
         [TestCase("{OXyPHEnBUTaZoNE}", 82)]
