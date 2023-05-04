@@ -9,15 +9,75 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
+        private char[] _word;
+        
         public Scrabble(string word)
-        {            
-            //TODO: do something with the word variable
+        {
+            _word = word.ToUpper().ToCharArray();
         }
 
         public int score()
         {
+            Dictionary<string, int> values = new Dictionary<string, int>();
+            values.Add("A", 1);
+            values.Add("E", 1);
+            values.Add("I", 1);
+            values.Add("O", 1);
+            values.Add("U", 1);
+            values.Add("L", 1);
+            values.Add("N", 1);
+            values.Add("R", 1);
+            values.Add("S", 1);
+            values.Add("T", 1);
+            values.Add("D", 2);
+            values.Add("G", 2);
+            values.Add("B", 3); 
+            values.Add("C", 3);
+            values.Add("M", 3);
+            values.Add("P", 3);
+            values.Add("F", 4);
+            values.Add("H", 4);
+            values.Add("V", 4);
+            values.Add("W", 4);
+            values.Add("Y", 4);
+            values.Add("J", 8);
+            values.Add("X", 8);
+            values.Add("K", 5);
+            values.Add("Q", 10);
+            values.Add("Z", 10);
+            int result = 0;
+
+            for (int i =0; i<_word.Length;i++)
+            { 
+                if (Char.IsAsciiLetter(_word[i]))
+                {
+                    if (values.ContainsKey(_word[i].ToString()))
+                        { 
+                            result +=  values[_word[i].ToString()]; 
+                       } 
+                    //result += values[_word[i].ToString()];
+                    //for (int j = 0; j< values.Count; j++)
+                    //{ 
+                    //    if (values.ContainsKey(_word[i].ToString()))
+                    //    { 
+                    //        result +=  values[_word[i].ToString()]; 
+                    //    } 
+
+                }
+                else 
+                {
+                    result = 0;
+                }
+            }
+            // validity checks - return 0
+            // turn word into char array
+            // iterate array
+            // loopup char in score array? > dict?
+            // increment variabel with score
+            // Char.
+
             //TODO: score calculation code goes here
-            throw new NotImplementedException(); //TODO: Remove this line when the code has been written
+            return result;
         }
     }
 }
