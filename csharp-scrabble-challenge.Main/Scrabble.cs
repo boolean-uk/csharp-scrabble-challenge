@@ -58,14 +58,19 @@ namespace csharp_scrabble_challenge.Main
             }
             foreach(char c in _word.ToUpper())
             {
-               foreach(List<string> list in _dictionary.Keys)
+               if(Char.IsAsciiLetter(c))
                 {
-                    if (list.Contains(c.ToString()))
+                    foreach (List<string> list in _dictionary.Keys)
                     {
-                        result += _dictionary[list];
-                        break;
+                        if (list.Contains(c.ToString()))
+                        {
+                            result += _dictionary[list];
+                            break;
+                        }
                     }
-                }
+
+                } 
+               
             }
 
             if (_word.ElementAt(0) == '{' && _word.ElementAt(_word.Count() -1) == '}') {
