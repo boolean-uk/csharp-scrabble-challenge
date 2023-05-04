@@ -19,6 +19,11 @@ namespace csharp_scrabble_challenge.Main
         public int score()
         {
             Dictionary<string, int> values = new Dictionary<string, int>();
+            // char instead of string
+            //{
+            //    {'A', 1},
+
+            //};
             values.Add("A", 1);
             values.Add("E", 1);
             values.Add("I", 1);
@@ -31,7 +36,7 @@ namespace csharp_scrabble_challenge.Main
             values.Add("T", 1);
             values.Add("D", 2);
             values.Add("G", 2);
-            values.Add("B", 3); 
+            values.Add("B", 3);
             values.Add("C", 3);
             values.Add("M", 3);
             values.Add("P", 3);
@@ -66,9 +71,19 @@ namespace csharp_scrabble_challenge.Main
                 }
                 else 
                 {
-                    result = 0;
+                    result = result;
                 }
             }
+            if (_word.First() == '{' && _word.Last() == '}')
+            {
+                result *= 2;
+            }
+            if (_word.First() == '[' && _word.Last() == ']')
+            //(_word.ToString().StartsWith("[") && _word.ToString().EndsWith("]"))
+            {
+                result *= 3;
+            }
+
             // validity checks - return 0
             // turn word into char array
             // iterate array
