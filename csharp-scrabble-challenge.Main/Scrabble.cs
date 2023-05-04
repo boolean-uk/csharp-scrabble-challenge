@@ -10,8 +10,7 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
 
-
-        // TODO: do something with the word variable
+        // store word in private member
         private string _word;
 
         // store the values with a dictionary/lists
@@ -26,7 +25,7 @@ namespace csharp_scrabble_challenge.Main
                 { 'Q', 10 }, { 'Z', 10 }
             };
 
-        // store word in private member
+
         public Scrabble(string word)
         {
             // convert to UpperCase
@@ -37,30 +36,28 @@ namespace csharp_scrabble_challenge.Main
         public int score()
         {
             int score = 0;
-            // validity checks- - return 0;
-            // check for space? invalid word return 0;
+            // validation
+ 
             if (string.IsNullOrEmpty(_word) || _word.Contains(" "))
             {
                 return score;
             }
 
-            // turn word into char array
-            // iterate array
-            // lookup char in score array
-            // increment variable with score?
+            // iterate through each character in the word
             foreach (char c in _word)
             {
-                if(letterValue.ContainsKey(c))
+                // get character value from the dictionary
+                if (letterValue.ContainsKey(c))
                 {
                     score += letterValue[c];
                 }
             }
 
 
+            return score;
 
-
-            // TODO: score calculation code goes here
-            return score; //TODO: Remove this line when the code has been written
         }
+
     }
+
 }
