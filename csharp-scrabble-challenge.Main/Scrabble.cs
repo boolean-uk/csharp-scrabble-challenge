@@ -12,6 +12,7 @@ namespace csharp_scrabble_challenge.Main
 
         // store word in private member
         private string _word;
+        
 
         // store the values with a dictionary/lists
         private Dictionary<char, int> letterValue = new Dictionary<char, int>()
@@ -37,7 +38,7 @@ namespace csharp_scrabble_challenge.Main
         {
             int score = 0;
             // validation
- 
+
             if (string.IsNullOrEmpty(_word) || _word.Contains(" "))
             {
                 return score;
@@ -51,6 +52,14 @@ namespace csharp_scrabble_challenge.Main
                 {
                     score += letterValue[c];
                 }
+            }
+            if (_word.First() == '{' && _word.Last() == '}')
+            {
+                score *= 2;
+            }
+            if (_word.First() == '[' && _word.Last() == ']')
+            {
+                score *= 3;
             }
 
 
