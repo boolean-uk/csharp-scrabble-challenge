@@ -51,6 +51,10 @@ namespace csharp_scrabble_challenge.Main
             values.Add("Q", 10);
             values.Add("Z", 10);
             int result = 0;
+            if (_word.Length == 0)
+            {
+                return result;
+            }
 
             for (int i =0; i<_word.Length;i++)
             { 
