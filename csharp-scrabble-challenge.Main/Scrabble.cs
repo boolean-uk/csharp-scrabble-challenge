@@ -60,7 +60,29 @@ namespace csharp_scrabble_challenge.Main
             // Turn word into char array
             char[] charArr = _word.ToUpper().ToCharArray();
 
-            
+            // check if charArr contains nothing, return 0
+            if (charArr.Length == 0)
+            {
+                return score;
+            }
+
+            // check if the word has curly brackets
+            if (charArr[0] == '{' && charArr[charArr.Length - 1] == '}'  )
+            {
+                _doubleScore = 2;
+            } else
+            {
+                _doubleScore = 1;
+            }
+
+            // check if the word has square brackets
+            if (charArr[0] == '[' && charArr[charArr.Length - 1] == ']')
+            {
+                _tripleScore = 3;
+            } else
+            {
+                _tripleScore = 1;
+            }
 
             // iterate char array
             for (int i = 0; i < charArr.Length; i++)
@@ -75,25 +97,10 @@ namespace csharp_scrabble_challenge.Main
                     if (letterScore.ContainsKey(charArr[i]))
                     {
                         // increment variable with score
-                        score += letterScore[charArr[i]];
+                        score += letterScore[charArr[i]] * _doubleScore * _tripleScore;
                     }
                 }
             }
-
-            // check if the word has curly brackets
-            if (charArr[0] == '{' && charArr[charArr.Length - 1] == '}')
-            {
-                // double score
-                score *= 2;
-            }
-
-            // check if the word has square brackets
-            if (charArr[0] == '[' && charArr[charArr.Length - 1] == ']')
-            {
-                // triple score
-                score *= 3;
-            }
-
             return score;
         }
     }
