@@ -10,11 +10,6 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
-        private bool _curlyLeftBracket = false;
-        private bool _curlyRightBracket = false;
-        private bool _squareLeftBracket = false;
-        private bool _squareRightBracket = false;
-        private char[] _symbols = { '{', '}', '[', ']' };
         private string _word;
         private Dictionary<char[], int> _letters = new Dictionary<char[], int>();
         public Scrabble(string word)
@@ -41,18 +36,6 @@ namespace csharp_scrabble_challenge.Main
                 return score;
             }
 
-            if (charArr[0] == _symbols[0] && charArr[charArr.Length - 1] == _symbols[1])
-            {
-                _curlyLeftBracket = true;
-                _curlyRightBracket = true;
-            }
-
-            if (charArr[0] == _symbols[2] && charArr[charArr.Length - 1] == _symbols[3])
-            {
-                _squareLeftBracket = true;
-                _squareRightBracket = true;
-            }
-
             foreach (char c in charArr)
             {
                 if (Char.IsWhiteSpace(c))
@@ -66,18 +49,23 @@ namespace csharp_scrabble_challenge.Main
                     {
                         foreach (char c2 in kvp.Key)
                         {
-                            if (c2 == c && _curlyLeftBracket == true && _curlyRightBracket == true)
+                            if (c2 == c)
                             {
-                                score = score + kvp.Value * 2;
-                            } else if (c2 == c && _squareLeftBracket == true && _squareRightBracket == true)
-                            {
-                                score = score + kvp.Value * 3;
-                            } else if (c2 == c) {
-                                score = score + kvp.Value;
+                                score += kvp.Value;
                             }
                         }
                     }
                 }
+            }
+
+            if (_word.First() == '{' && _word.Last() == '}')
+            {
+                score *= 2;
+            }
+
+            if (_word.First() == '[' && _word.Last() == ']')
+            {
+                score *= 3;
             }
             return score;
         }
