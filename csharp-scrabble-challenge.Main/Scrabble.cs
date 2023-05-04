@@ -63,7 +63,10 @@ namespace csharp_scrabble_challenge.Main
             
             char[] charrArray = _word.ToLower().ToCharArray();
             int letterScore = 0;
-          
+
+            if (charrArray.Length == 0) {
+                return 0;
+            }
 
             for(int i = 0; i < charrArray.Length; i++) 
             {
@@ -74,7 +77,7 @@ namespace csharp_scrabble_challenge.Main
                         {
                             letterScore += kvp.Value;
                         }
-                }  else if ( charrArray[i].Equals("{") && charrArray[i + 2].Equals("}") )
+                }  else if ( charrArray[i].Equals('{') && charrArray[i + 2].Equals('}') )
                 {
                     foreach (KeyValuePair<char, int> kvp in letterValues)
                         if (kvp.Key == charrArray[i+1])
@@ -84,7 +87,7 @@ namespace csharp_scrabble_challenge.Main
                     i += 2;
                     break;
                 }
-                else if (charrArray[i].Equals("[") && charrArray[i + 2].Equals("]"))
+                else if (charrArray[i].Equals('[') && charrArray[i + 2].Equals(']'))
                 {
                     foreach (KeyValuePair<char, int> kvp in letterValues)
                         if (kvp.Key == charrArray[i]+1)
@@ -93,7 +96,7 @@ namespace csharp_scrabble_challenge.Main
                         }
                     i += 2;
                     break;
-                }
+                } 
 
 
 
