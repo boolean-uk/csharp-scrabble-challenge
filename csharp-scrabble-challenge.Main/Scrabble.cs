@@ -12,7 +12,7 @@ namespace csharp_scrabble_challenge.Main
 
         // store word in private member
         private string _word;
-        
+
 
         // store the values with a dictionary/lists
         private Dictionary<char, int> letterValue = new Dictionary<char, int>()
@@ -45,28 +45,59 @@ namespace csharp_scrabble_challenge.Main
             }
 
             // iterate through each character in the word
-            foreach (char c in _word)
+            // get character value from the dictionary
+            for (int i = 0; i < _word.Length; i++)
             {
-                // get character value from the dictionary
-                if (letterValue.ContainsKey(c))
+                if (Char.IsAsciiLetter(_word[i]))
                 {
-                    score += letterValue[c];
+                    foreach (KeyValuePair<char, int> kvp in letterValue)
+                    {
+                        if (kvp.Key == _word[i])
+                        {
+                            score += kvp.Value;
+                        }
+                    }
+                }
+                else if (_word[i].Equals('{') && (_word[i + 2].Equals('}')))
+                {
+                    foreach (KeyValuePair<char, int> kvp in letterValue)
+                        if (kvp.Key == _word[i + 1])
+                        {
+                            score += kvp.Value * 2;
+                        }
+                    i += 2;
+                    break;
+                }
+                else if (_word[i].Equals('[') && (_word[i + 2].Equals(']')))
+                {
+                    foreach (KeyValuePair<char, int> kvp in letterValue)
+                        if (kvp.Key == _word[i + 1])
+                        {
+                            score += kvp.Value * 3;
+                        }
+                    i += 2;
+                    break;
                 }
             }
-            if (_word.First() == '{' && _word.Last() == '}')
-            {
-                score *= 2;
-            }
-            if (_word.First() == '[' && _word.Last() == ']')
-            {
-                score *= 3;
-            }
 
 
-            return score;
+
+
+
+                if (_word.First() == '{' && _word.Last() == '}')
+                {
+                    score *= 2;
+                }
+                if (_word.First() == '[' && _word.Last() == ']')
+                {
+                    score *= 3;
+                }
+
+
+                return score;
+
+            }
 
         }
 
     }
-
-}
