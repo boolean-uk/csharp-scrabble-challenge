@@ -11,7 +11,7 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
         private string _word;
-        private Dictionary<char[], int> _letters = new Dictionary<char[], int>();
+        private Dictionary<String, int> _letters = new Dictionary<String, int>();
         public Scrabble(string word)
         {            
             _word = word.ToUpper();
@@ -21,41 +21,64 @@ namespace csharp_scrabble_challenge.Main
         {
             int score = 0;
            
-            _letters.Add(new char[] { 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T' }, 1) ;
-            _letters.Add(new char[] { 'D', 'G' }, 2);
-            _letters.Add(new char[] { 'B', 'C', 'M', 'P' }, 3);
-            _letters.Add(new char[] { 'F', 'H', 'V', 'W', 'Y' }, 4);
-            _letters.Add(new char[] { 'K' }, 5);
-            _letters.Add(new char[] { 'J', 'X' }, 8);
-            _letters.Add(new char[] { 'Q', 'Z' }, 10);
+            _letters.Add("AEIOULNRST", 1) ;
+            _letters.Add("DG", 2);
+            _letters.Add("BCMP", 3);
+            _letters.Add("FHVWY", 4);
+            _letters.Add("K", 5);
+            _letters.Add("JX", 8);
+            _letters.Add("QZ", 10);
             
-            char[] charArr = _word.ToCharArray();
 
-            if (charArr.Length == 0)
+            if (_word.Length == 0)
             {
                 return score;
             }
 
-            foreach (char c in charArr)
+            for (int i = 0; i < _word.Length; i++)
             {
-                if (Char.IsWhiteSpace(c))
+                if (Char.IsWhiteSpace(_word[i]))
                 {
                     return score;
                 }
 
-                if(Char.IsAsciiLetter(c))
+                if (_word[i] == '{' && _word[i + 2] == '}')
                 {
-                    foreach (KeyValuePair<char[], int> kvp in _letters)
+                    foreach (KeyValuePair<String, int> kvp in _letters)
                     {
-                        foreach (char c2 in kvp.Key)
+                        if (kvp.Key.Contains(_word[i + 1]))
                         {
-                            if (c2 == c)
-                            {
-                                score += kvp.Value;
-                            }
+                            score += kvp.Value * 2;
                         }
+                        i += 2;
+                        break;
                     }
                 }
+
+                if (_word[i] == '[' && _word[i + 2] == ']')
+                {
+                    foreach (KeyValuePair<String, int> kvp in _letters)
+                    {
+                        if (kvp.Key.Contains(_word[i + 1]))
+                        {
+                            score += kvp.Value * 3;
+                        }
+                        i += 2;
+                        break;
+                    }
+                }
+
+                if (Char.IsAsciiLetter(_word[i]))
+                {
+                    foreach (KeyValuePair<String, int> kvp in _letters)
+                    {
+                        if (kvp.Key.Contains(_word[i]))
+                        {
+                            score += kvp.Value;
+                        }
+                    }
+                } 
+
             }
 
             if (_word.First() == '{' && _word.Last() == '}')
