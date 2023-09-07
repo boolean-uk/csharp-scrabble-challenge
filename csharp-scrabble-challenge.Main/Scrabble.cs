@@ -11,9 +11,9 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
-            private string _word; //setting private so cant be accessed outside the class
-             //setting op dictionary first
-            private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
+        private string _word; //setting private so cant be accessed outside the class
+                              //setting op dictionary first
+        private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
             {
                 {'A', 1}, {'E', 1}, {'I', 1}, {'O', 1}, {'U', 1}, {'L', 1}, {'N', 1}, {'R', 1}, {'S', 1}, {'T', 1},
                 {'D', 2}, {'G', 2},
@@ -23,7 +23,7 @@ namespace csharp_scrabble_challenge.Main
                 {'J', 8}, {'X', 8},
                 {'Q', 10}, {'Z', 10}
             };
-          
+
         public Scrabble(string word)
         {
             _word = word?.Trim().ToUpper();
@@ -37,14 +37,16 @@ namespace csharp_scrabble_challenge.Main
             if (string.IsNullOrEmpty(_word)) return 0; //if its empty, send back 0
 
             int score = 0; //setting initials score to 0
-            int multiplierOfWord = 1; //setting initial multiplier of word to 1
-
-        //used folowing documentation:
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring
 
             //------------------word multipliers ------------------------------
+
+            int multiplierOfWord = 1; //setting initial multiplier of word to 1
+
+            //used folowing documentation:
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring
+
             //double word
             if (_word.StartsWith("{") && _word.EndsWith("}"))
             {
@@ -59,6 +61,35 @@ namespace csharp_scrabble_challenge.Main
                 _word = _word.Substring(1, _word.Length - 2);
             }
 
+            //------------------letter multipliers ------------------------------
+
+            for (int i = 0; i < _word.Length; i++)  // looping trough word
+            {
+                char character = _word[i];
+                int multiplierOfLetter = 1; // standard multiplier of 1 if letter is not "special"
+
+                //double letter
+                if (character == '{' && i < _word.Length - 2 && _word[i + 2] == '}')
+                {
+                    multiplierOfLetter = 2;
+                    character = _word[i + 1];
+                    i += 2;
+                }
+                //tripple letter
+                else if (character == '[' && i < _word.Length - 2 && _word[i + 2] == ']')
+                {
+                    multiplierOfLetter = 3;
+                    character = _word[i + 1];
+                    i += 2;
+                }
+                //calculating for current character
+                if (_valueOfLetters.ContainsKey(character))
+                {
+                    score += _valueOfLetters[character] * multiplierOfLetter;
+                }
+            }
+            //returning the total score multiplied by the multiplier of the word (2 with double and 3 with tripple word)
+            return score * multiplierOfWord;
         }
-    }
+    } 
 }
