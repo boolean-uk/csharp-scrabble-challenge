@@ -9,7 +9,7 @@ namespace csharp_scrabble_challenge
         {
             //setting up path for SOWPODS.txt
             string currentDirectory = Directory.GetCurrentDirectory();
-            string relativePathToWordList = "SOWPODS.txt";
+            string relativePathToWordList = "Data/SOWPODS.txt";
             string fullPathToWordList = Path.Combine(currentDirectory, relativePathToWordList);
 
 
