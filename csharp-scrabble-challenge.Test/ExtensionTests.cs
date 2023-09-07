@@ -17,7 +17,7 @@ namespace csharp_scrabble_challenge.Test
         [SetUp]
         public void Setup()
         {
-            string relativePathToWordList = "./SOWPODS.txt";
+            string relativePathToWordList = "SOWPODS.txt";
             _wordList = new WordList(relativePathToWordList);
 
         }
