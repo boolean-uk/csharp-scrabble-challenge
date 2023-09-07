@@ -22,7 +22,13 @@ namespace csharp_scrabble_challenge
 
             //Initializing wordlist and the game
             var wordList = new WordList(fullPathToWordList);
-            var game = new Scrabble("[quirky]", wordList);
+
+            //asking user for input
+            Console.WriteLine("Please enter a word to get the matching score:");
+            string userInputWord = Console.ReadLine();
+
+            //starting game with the user input word
+            var game = new Scrabble(userInputWord, wordList);
 
             //printing out the score for the word
             Console.WriteLine($"The score for the word {game.GetWord()} is: {game.score()}");
