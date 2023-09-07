@@ -12,7 +12,9 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
         private string _word = string.Empty; //setting private so cant be accessed outside the class + added default value to fix the warning
-                              //setting op dictionary first
+        private WordList _wordList; //using the wordlist
+
+          //--------------setting op dictionary first-------------------
         private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
             {
                 {'A', 1}, {'E', 1}, {'I', 1}, {'O', 1}, {'U', 1}, {'L', 1}, {'N', 1}, {'R', 1}, {'S', 1}, {'T', 1},
@@ -24,12 +26,18 @@ namespace csharp_scrabble_challenge.Main
                 {'Q', 10}, {'Z', 10}
             };
 
-        public Scrabble(string word)
+        public Scrabble(string word, WordList wordList)  //added wordlist
         {
+            this._wordList = wordList;
             _word = word?.Trim().ToUpper() ?? string.Empty; //used ?? to add default value when word is 0, to fix the warning
             //word? for if word is null then the rest dont get executed
             // trim for removing whitspace chars, spaces, tabs, newline..
             //toUpper for for converting string to uppercase
+
+            if(!_wordList.IsItAValidWord(_word)) // using the valid word method from the wordlist
+            {
+                Console.WriteLine($"ERROR!!! {word} is not a valid Scrabble word!");
+            }
         }
 
         public int score() //method for returning the score with the extended critiria

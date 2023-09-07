@@ -5,7 +5,16 @@ namespace csharp_scrabble_challenge.Test
 {
     [TestFixture]
     public class CoreTests
-    {        
+    {
+        private WordList _wordList;
+
+        public void Setup()
+        {
+            string relativePathToWordList = "./SOWPODS.txt";
+            _wordList = new WordList(relativePathToWordList);
+
+        }
+
         [TestCase("", 0)]
         [TestCase(" ", 0)]
         [TestCase(" \t\n", 0)]
@@ -20,6 +29,6 @@ namespace csharp_scrabble_challenge.Test
             Assert.AreEqual(this.GetWordScore(word), targetScore);
         }
 
-        private int GetWordScore(string word) => new Scrabble(word).score();
+        private int GetWordScore(string word) => new Scrabble(word, _wordList).score();
     }
 }
