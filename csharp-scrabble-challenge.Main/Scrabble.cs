@@ -10,11 +10,16 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
         private string _word;
+        private Dictionary<char, int> _scores;
 
         public Scrabble(string word)
         {            
             //TODO: do something with the word variable
             _word = word;
+            _scores = new Dictionary<char,int>(){
+                {'K', 5}, {'D', 2}, {'G', 2}, {'J', 8}, {'X', 8},
+                {'Q', 10}, {'Z', 10}, {'B', 3}, {'C', 3}, {'M', 3}, {'P', 3}, {'F', 4}, {'H', 4}, {'V', 4}, {'W', 4}, {'Y', 4}, {'A', 1}, {'E', 1}, {'I', 1}, {'O', 1}, {'U', 1}, {'L', 1}, {'N', 1}, {'R', 1}, {'S', 1}, {'T', 1}
+            };
         }
 
         public int score()
@@ -104,34 +109,7 @@ namespace csharp_scrabble_challenge.Main
             letter = ("" + letter).ToUpper()[0];
             if (letter < 'A' || letter > 'Z')
                 return 0;
-            
-            switch (letter)
-            {
-                case 'K':
-                    return 5;
-                case 'D':
-                case 'G':
-                    return 2;
-                case 'J':
-                case 'X':
-                    return 8;
-                case 'Q':
-                case 'Z':
-                    return 10;
-                case 'B':
-                case 'C':
-                case 'M':
-                case 'P':
-                    return 3;
-                case 'F':
-                case 'H':
-                case 'V':
-                case 'W':
-                case 'Y':
-                    return 4;
-                default:
-                    return 1;
-            }
+            return _scores[letter];
         }
 
         private bool matchBrackets(string word, char leftSymbol, char rightSymbol)
