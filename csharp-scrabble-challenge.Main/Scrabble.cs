@@ -11,7 +11,7 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
-        private string _word; //setting private so cant be accessed outside the class
+        private string _word = string.Empty; //setting private so cant be accessed outside the class + added default value to fix the warning
                               //setting op dictionary first
         private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
             {
@@ -26,7 +26,7 @@ namespace csharp_scrabble_challenge.Main
 
         public Scrabble(string word)
         {
-            _word = word?.Trim().ToUpper();
+            _word = word?.Trim().ToUpper() ?? string.Empty; //used ?? to add default value when word is 0, to fix the warning
             //word? for if word is null then the rest dont get executed
             // trim for removing whitspace chars, spaces, tabs, newline..
             //toUpper for for converting string to uppercase
