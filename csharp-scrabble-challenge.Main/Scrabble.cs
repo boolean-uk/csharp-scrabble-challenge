@@ -15,7 +15,7 @@ namespace csharp_scrabble_challenge.Main
         private string _originalWord = string.Empty; // to store seperate
         private WordList _wordList; //using the wordlist
 
-          //--------------setting op dictionary first-------------------
+        //--------------setting op dictionary first-------------------
         private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
             {
                 {'A', 1}, {'E', 1}, {'I', 1}, {'O', 1}, {'U', 1}, {'L', 1}, {'N', 1}, {'R', 1}, {'S', 1}, {'T', 1},
@@ -67,7 +67,7 @@ namespace csharp_scrabble_challenge.Main
                     char endMultiplier = word[startIndex] == '{' ? '}' : ']';
                     if (word[startIndex + 2] == endMultiplier)
                     {
-                        word = word.Remove(startIndex, 1); 
+                        word = word.Remove(startIndex, 1);
                         word = word.Remove(startIndex + 1, 1);
                     }
                 }
@@ -113,34 +113,38 @@ namespace csharp_scrabble_challenge.Main
                 int multiplierOfLetter = 1; // standard multiplier of 1 if letter is not "special"
 
                 //double letter
-                if (character == '{' && i < wordToScore.Length - 2 && wordToScore[i + 2] == '}')
+                if (character == '{')
                 {
                     multiplierOfLetter = 2;
-                    character = wordToScore[i + 1];
-                    i += 2;
+                    i++;
+                    character = char.ToUpper(wordToScore[i]);
                 }
                 //tripple letter
-                else if (character == '[' && i < wordToScore.Length - 2 && wordToScore[i + 2] == ']')
+                else if (character == '[')
                 {
                     multiplierOfLetter = 3;
-                    character = wordToScore[i + 1];
-                    i += 2;
+                    i++;
+                    character = char.ToUpper(wordToScore[i]);
                 }
                 //calculating for current character
                 if (_valueOfLetters.ContainsKey(character))
                 {
                     score += _valueOfLetters[character] * multiplierOfLetter;
                 }
-                
+                if ((i < wordToScore.Length - 1) && (wordToScore[i + 1] == '}' || wordToScore[i + 1] == ']'))
+                {
+                    i++;
+                }
             }
-
             //returning the total score multiplied by the multiplier of the word (2 with double and 3 with tripple word)
             return score * multiplierOfWord;
         }
+
         // for getting the word to display in Program
         public string GetWord()
         {
             return _originalWord;
+
         }
-    } 
+    }
 }
