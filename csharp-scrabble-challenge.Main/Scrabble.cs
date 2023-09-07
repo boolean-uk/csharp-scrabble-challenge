@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
@@ -31,22 +32,33 @@ namespace csharp_scrabble_challenge.Main
             //toUpper for for converting string to uppercase
         }
 
-        public int score() //method for returning the score
+        public int score() //method for returning the score with the extended critiria
         {
-            //TODO: score calculation code goes here
             if (string.IsNullOrEmpty(_word)) return 0; //if its empty, send back 0
 
             int score = 0; //setting initials score to 0
+            int multiplierOfWord = 1; //setting initial multiplier of word to 1
 
-            //calculating score
-            foreach(char character in _word)
+        //used folowing documentation:
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring
+
+            //------------------word multipliers ------------------------------
+            //double word
+            if (_word.StartsWith("{") && _word.EndsWith("}"))
             {
-                if (_valueOfLetters.ContainsKey(character))
-                {
-                    score += _valueOfLetters[character];
-                }
+                multiplierOfWord = 2;
+                _word = _word.Substring(1, _word.Length - 2);
             }
-            return score; //return score
+
+            //tripple word
+            else if (_word.StartsWith("[") && _word.EndsWith("]"))
+            {
+                multiplierOfWord = 3;
+                _word = _word.Substring(1, _word.Length - 2);
+            }
+
         }
     }
 }
