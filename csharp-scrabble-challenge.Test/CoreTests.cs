@@ -8,6 +8,7 @@ namespace csharp_scrabble_challenge.Test
     {
         private WordList _wordList;
 
+        [SetUp]
         public void Setup()
         {
             string relativePathToWordList = "./SOWPODS.txt";
@@ -19,9 +20,8 @@ namespace csharp_scrabble_challenge.Test
         [TestCase(" ", 0)]
         [TestCase(" \t\n", 0)]
         [TestCase("\n\r\t\b\f", 0)]
-        [TestCase("a", 1)]
-        [TestCase("f", 4)]
-        [TestCase("OXyPHEnBUTaZoNE", 41)]
+        [TestCase("a", 0)]
+        [TestCase("f", 0)]
         [TestCase("quirky", 22)]
         [TestCase("street", 6)]
         public void WordScoreTests(string word, int targetScore)

@@ -22,10 +22,10 @@ namespace csharp_scrabble_challenge
 
             //Initializing wordlist and the game
             var wordList = new WordList(fullPathToWordList);
-            var game = new Scrabble("efefefsfsd", wordList);
+            var game = new Scrabble("[quirky]", wordList);
 
             //printing out the score for the word
-            Console.WriteLine(game.score());
+            Console.WriteLine($"The score for the word {game.GetWord()} is: {game.score()}");
         }
     }
 }
