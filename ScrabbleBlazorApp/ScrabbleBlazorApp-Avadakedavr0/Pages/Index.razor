@@ -8,7 +8,11 @@
 <input @bind="userInputWord" placeholder="Enter your word" />
 <button @onclick="CalculateScore">Calculate Score</button>
 
-@if(score >= 0)
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p class="error-message">@ErrorMessage</p>
+    }
+    @if(score >= 0)
 {
     <p>The score for the word '@userInputWord' is: @score</p>
 }
@@ -17,6 +21,7 @@
     private string userInputWord = string.Empty;
     private int score = -1;
     private WordList wordList;
+    private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,5 +33,7 @@
     {
         var game = new Scrabble(userInputWord, wordList);
         score = game.score();
+        //adding a check for error
+        ErrorMessage = game.ErrorMessage;
     }
 }

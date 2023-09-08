@@ -14,6 +14,7 @@ namespace csharp_scrabble_challenge.Main
         private string _word = string.Empty; //setting private so cant be accessed outside the class + added default value to fix the warning
         private string _originalWord = string.Empty; // to store seperate
         private WordList _wordList; //using the wordlist
+        public string ErrorMessage { get; private set; } //erorr message
 
         //--------------setting op dictionary first-------------------
         private Dictionary<char, int> _valueOfLetters = new Dictionary<char, int>
@@ -35,7 +36,7 @@ namespace csharp_scrabble_challenge.Main
 
             if (!_wordList.IsItAValidWord(_word))
             {
-                Console.WriteLine($"ERROR!!! {_originalWord} is not a valid Scrabble word!");
+                ErrorMessage = $"ERROR!!! {_originalWord} is not a valid Scrabble word!"; //setting error message
                 _originalWord = string.Empty;
             }
         }
