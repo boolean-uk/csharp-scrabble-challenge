@@ -62,3 +62,59 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+body {
+    background-color:blanchedalmond;
+    font-family:Roboto, sans-serif;
+}
+
+h3 {
+    text-align:center;
+    margin-top:3rem;
+    color:brown
+}
+
+input{
+    width:70%;
+    padding:0.5rem;
+    margin-top:2rem;
+    border:1px solid brown;
+    border-radius:5px;
+    font-size:1rem;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:azure;
+}
+
+button {
+    display: block;
+    background-color: #0071c1;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ button:hover {
+     background-color:blue
+ }
+
+p {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+}
+
+.app-container {
+    max-width: 600px;
+    padding: 2rem;
+    background-color:antiquewhite;
+    border:3px solid brown;
+    border-radius: 10px;
+    box-sizing: border-box;
+}

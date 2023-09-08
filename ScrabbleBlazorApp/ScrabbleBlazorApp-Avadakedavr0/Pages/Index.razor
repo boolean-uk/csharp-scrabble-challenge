@@ -2,6 +2,7 @@
 @using csharp_scrabble_challenge.Main
 @inject HttpClient Http
 
+<div class="app-container">
 <h3>Scrabble Score Calculator</h3>
 
 <input @bind="userInputWord" placeholder="Enter your word" />
@@ -11,7 +12,7 @@
 {
     <p>The score for the word '@userInputWord' is: @score</p>
 }
-
+</div>
 @code {
     private string userInputWord = string.Empty;
     private int score = -1;
