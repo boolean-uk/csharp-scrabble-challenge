@@ -42,7 +42,7 @@
                         i++;
                         break;
                     case ']':
-                        scoreMultiplier = 2;
+                        scoreMultiplier = 1;
                         i++;
                         break;
                     default:
