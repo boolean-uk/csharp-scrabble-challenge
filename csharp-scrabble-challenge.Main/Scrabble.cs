@@ -72,17 +72,39 @@ namespace csharp_scrabble_challenge.Main
                     {
                         modifier = 3;
                     }
+                    if (i < (charArr.Length - 2))
+                    {
+                        if(charArr[i] == '{' && charArr[i + 2] != '}') // Check if there is no corresponding bracket
+                        {
+                            return 0;
+                        }
+                        if(charArr[i] == '[' && charArr[i + 2] != ']') // Check if there is no corresponding bracket
+                        {
+                            return 0;
+                        }
+                    }
+                    if (i >= 2)
+                    {
+                        if (charArr[i] == '}' && charArr[i + -2] != '{') // Check if there is no corresponding bracket
+                        {
+                            return 0;
+                        }
+                        if (charArr[i] == ']' && charArr[i + -2] != '[') // Check if there is no corresponding bracket
+                        {
+                            return 0;
+                        }
+                    }
                 }
                 
                 scores.TryGetValue(charArr[i], out intOut);
                 result += intOut*modifier;
                 modifier = 1; // Make sure to reset modifier to default
             }
-            if (charArr[0] == '{' && charArr[charArr.Length-1] == '}') // Check if whole word is surrounded
+            if (charArr[0] == '{' && charArr[charArr.Length-1] == '}' && charArr[2] != '}' && charArr[charArr.Length-3] != '{') // Check if whole word is surrounded
             {
                 result = result * 2;
             }
-            if (charArr[0] == '[' && charArr[charArr.Length - 1] == ']') //Check if whole word is surrounded
+            if (charArr[0] == '[' && charArr[charArr.Length - 1] == ']' && charArr[2] != ']' && charArr[charArr.Length - 3] != '[') //Check if whole word is surrounded
             {
                 result = result * 3;
             }
