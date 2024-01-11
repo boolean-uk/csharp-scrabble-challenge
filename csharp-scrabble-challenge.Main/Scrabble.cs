@@ -64,16 +64,16 @@ namespace csharp_scrabble_challenge.Main
                     switch (letter)
                     {
                         case '{':
-                            multiplier = 2;
+                            multiplier *= 2;
                             break;
                         case '}':
-                            multiplier = 1;
+                            multiplier /= 2;
                             break;
                         case '[':
-                            multiplier = 3;
+                            multiplier *= 3;
                             break;
                         case ']':
-                            multiplier = 1;
+                            multiplier /= 3;
                             break;
                         default:
                             return 0;
