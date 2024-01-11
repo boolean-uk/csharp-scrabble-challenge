@@ -13,10 +13,10 @@ namespace csharp_scrabble_challenge.Main
         private string _word;
 
         private List<string> _doubleLetters = new List<string>();
-        private List<string> _trippleLetters = new List<string>();
+        private List<string> _tripleLetters = new List<string>();
 
         private List<string> _doubleWords = new List<string>();
-        private List<string> _trippleWords = new List<string>();
+        private List<string> _tripleWords = new List<string>();
 
         private Dictionary<string, int> _points = new Dictionary<string, int>();
 
@@ -88,6 +88,7 @@ namespace csharp_scrabble_challenge.Main
             List<string> letterList;
             List<string> WordList;
 
+            // Select appropriate multiplier
             if (delim1 == "{")
             {
                 letterList = _doubleLetters;
@@ -95,15 +96,16 @@ namespace csharp_scrabble_challenge.Main
             }
             else if (delim1 == "[")
             {
-                letterList = _trippleLetters;
-                WordList = _trippleWords;
+                letterList = _tripleLetters;
+                WordList = _tripleWords;
             }
             else 
             {
                 throw new ArgumentException("Non valid deliminator");
             }
 
-            int distance = word.IndexOf(delim2) - word.IndexOf(delim1);
+            // First attempt to do whole word, then single letters.
+            int distance = word.IndexOf(delim2) - word.LastIndexOf(delim1);
             int index = word.IndexOf(delim1) + 1;
             if (distance == 2)
             {
@@ -123,7 +125,10 @@ namespace csharp_scrabble_challenge.Main
             }
         }
 
-
+        // This is kinda hideous
+        /// <summary>
+        /// Populate the dictionary that is used to calculate points. 
+        /// </summary>
         internal void populatePointsDict()
         {
             string[] value1 = ["a", "e", "i", "o", "u", "l", "n", "r", "s", "t"];
@@ -153,7 +158,7 @@ namespace csharp_scrabble_challenge.Main
                 if (_doubleLetters.Contains(theLetter))
                 {
                     res += (_points.GetValueOrDefault(theLetter, 0) * 2);
-                } else if (_trippleLetters.Contains(theLetter))
+                } else if (_tripleLetters.Contains(theLetter))
                 {
                     res += (_points.GetValueOrDefault(theLetter, 0) * 3);
                 } else 
@@ -161,8 +166,9 @@ namespace csharp_scrabble_challenge.Main
                     res += _points.GetValueOrDefault(theLetter, 0);
                 }
             }
+            // Multiply the entire result if double or triple word.
             if (_doubleWords.Contains(_word)) { res = res * 2; }
-            if (_trippleWords.Contains(_word)) { res = res * 3; }
+            if (_tripleWords.Contains(_word)) { res = res * 3; }
 
             return res;
 
