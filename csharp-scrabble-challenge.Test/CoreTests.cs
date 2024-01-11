@@ -20,6 +20,14 @@ namespace csharp_scrabble_challenge.Test
             Assert.AreEqual(this.GetWordScore(word), targetScore);
         }
 
+        [TestCase("Hell{o}", 9)]
+        [TestCase("Co[f]{f}e", 25)]
+        [TestCase("T[ea]", 7)]
+        public void DoubleAndTrippleLetterTests(string word, int targetScore)
+        {
+            Assert.AreEqual(GetWordScore(word), targetScore);
+        }
+
         private int GetWordScore(string word) => new Scrabble(word).score();
     }
 }
