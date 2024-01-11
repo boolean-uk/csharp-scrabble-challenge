@@ -67,16 +67,16 @@ namespace csharp_scrabble_challenge.Main
                         score += (mult * 10);
                         break;
                     case '{':
-                        mult = 2;
+                        mult *= 2;
                         break;
                     case '}':
-                        mult = 1;
+                        mult /= 2;
                         break;
                     case '[':
-                        mult = 3;
+                        mult *= 3;
                         break;
                     case ']':
-                        mult = 1;
+                        mult /= 3;
                         break;
                 }
             }
