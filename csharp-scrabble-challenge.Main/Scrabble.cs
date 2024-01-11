@@ -60,6 +60,26 @@ namespace csharp_scrabble_challenge.Main
             word = word.Replace(token, "");
         }
 
+        /// <summary>
+        /// Remove a specified token from the provided word. This method require a string passed by reference!
+        /// </summary>
+        /// <param name="word"> Referance variable of the string to remove a token from. </param>
+        /// <param name="token"> The token that is to be removed from the word. </param>
+        internal void removeToken(ref string word, int firstPos, int lastPos)
+        {
+            word = word.Remove(firstPos, 1);
+            word = word.Remove(lastPos-1, 1);
+        }
+
+        internal void removeAnyMultiplierTokens(ref string word) 
+        {
+            string[] tokens = ["[", "]", "{", "}"];
+            foreach (string token in tokens) 
+            {
+                removeToken(ref word, token);
+            }
+        }
+
         internal void interpretMultiplier(ref string word)
         {
             // If nothing to interpret return
@@ -105,19 +125,20 @@ namespace csharp_scrabble_challenge.Main
             }
 
             // First attempt to do whole word, then single letters.
-            int distance = word.IndexOf(delim2) - word.LastIndexOf(delim1);
-            int index = word.IndexOf(delim1) + 1;
+            int index1 = word.IndexOf(delim1);
+            int index2 = word.LastIndexOf(delim2);
+            int distance = index2 - index1;
             if (distance == 2)
             {
-                removeToken(ref word, delim1);
-                removeToken(ref word, delim2);
-                letterList.Add(word.Substring(index, 1));
+                removeToken(ref word, index1, index2);
+                letterList.Add(word.Substring(index1, 1));
             }
             else if (distance == (word.Length - 1))
             {
-                removeToken(ref word, delim1);
-                removeToken(ref word, delim2);
-                WordList.Add(word);
+                string cleanedWord = word;
+                removeToken(ref word, index1, index2);
+                removeAnyMultiplierTokens(ref cleanedWord);
+                WordList.Add(cleanedWord);
             }
             else
             {
