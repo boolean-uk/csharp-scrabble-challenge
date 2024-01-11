@@ -20,6 +20,10 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[OXyPHEnBUTaZoNE]", 123)]
         [TestCase("{str{e}et}", 14)] //extension double word and double letter
         [TestCase("{h}ous{e}", 13)]
+        [TestCase("[{h}ous{e}]", 39)]
+        [TestCase("[h}ous{e}]", 0)] //Error case
+        [TestCase("[{h}o1s{e}]", 0)] //Error case
+
 
         public void ExtendedCriteriaTests(string word, int targetScore)
         {

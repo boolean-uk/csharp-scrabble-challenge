@@ -54,21 +54,34 @@ namespace csharp_scrabble_challenge.Main
             int multiplier = 1;
             foreach(char letter in _word) 
             {
-                //If the character is a starting bracket, the multiplier is increased
-                if (letter == '{') { multiplier *= 2; }
-                if (letter == '[') { multiplier *= 3; }
-
-                //If the character is a closing bracket, the multiplier is decreased
-                if (letter == '}') { multiplier /= 2; }
-                if (letter == ']') { multiplier /= 3; }
-                //Is the letter in our Letter dictionary?
-                if (letters.ContainsKey(letter))
+                switch (letter)
                 {
-                    //Add the points associated with the letter to our score, with our multiplier
-                    finalScore += letters[letter] *multiplier;
+                    case '{': 
+                        multiplier *= 2; 
+                        break;
+                    case '[':
+                        multiplier *= 3;
+                        break;
+                    case '}':
+                        multiplier /= 2;
+                        break;
+                    case ']':
+                        multiplier /= 3;
+                        break;
+
+                    default:
+                        //If we find the char in our directory, add its score, if not throw error.
+                        if (letters.ContainsKey(letter)) { finalScore += letters[letter] * multiplier; }
+                        else { return 0; }
+                        break;
+                        
                 }
+
             }
-            
+            //If the multiplier isnt 1 at the end, there is a parentheses missing, so throw an error
+            if (multiplier != 1) { return 0; }
+
+
             return finalScore;     
                
         }
