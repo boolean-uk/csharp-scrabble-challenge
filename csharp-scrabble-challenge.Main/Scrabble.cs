@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
-    {
+    {        
         private Dictionary<char, int> _scoreSheet;
+        char[] point1 = "AEIOULNRST".ToCharArray();
+        char[] point2 = "DG".ToCharArray();
+        char[] point3 = "BCMP".ToCharArray();
+        char[] point4 = "FHVWY".ToCharArray();
+        char[] point5 = "K".ToCharArray();
+        char[] point8 = "JX".ToCharArray();
+        char[] point10 = "QZ".ToCharArray();
         string _word;
         int totalScore;
         public Scrabble(string word)
         {
             //TODO: do something with the word variable
             _scoreSheet = new Dictionary<char, int>();
-            char[] point1 = "AEIOULNRST".ToCharArray();
-            char[] point2 = "DG".ToCharArray();
-            char[] point3 = "BCMP".ToCharArray();
-            char[] point4 = "FHVWY".ToCharArray();
-            char[] point5 = "K".ToCharArray();
-            char[] point8 = "JX".ToCharArray();
-            char[] point10 = "QZ".ToCharArray();
             foreach (char value in point1)
                 _scoreSheet.Add(value, 1);
             foreach (char value in point2)
