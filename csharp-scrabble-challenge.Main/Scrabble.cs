@@ -44,7 +44,14 @@ namespace csharp_scrabble_challenge.Main
                     multiplier /= 2;
                 else if (item == ']')
                     multiplier /= 3;
+                else if (char.IsDigit(item))
+                    return -1;
             }
+            if (multiplier != 1)
+            {
+                return -1;
+            }
+
             return score;
             //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
         }
