@@ -28,7 +28,7 @@ namespace csharp_scrabble_challenge.Main
             Word = word.ToLower();
         }
 
-        public string Word { get { return _word; } set { _word = value; } }
+        public string Word { get { return _word; } set { _word = value.ToLower(); } }
 
         public int score()
         {
