@@ -27,75 +27,35 @@ namespace csharp_scrabble_challenge.Main
 
         }
 
-
-        private int scoreCounter(char[] wordCharArr, int multiplier)
-        {
-            int scoreVal = 0;
-            for (int i = 0; i < wordCharArr.Length; i++)
-            {
-                if (this._scoreMap.ContainsKey(Char.ToUpper(wordCharArr[i])))
-                {
-                    scoreVal += this._scoreMap[Char.ToUpper(wordCharArr[i])];
-                }
-            }
-            return scoreVal * multiplier;
-        }
-
-
         public int score()
         {
             //TODO: score calculation code goes here
             int scoreVal = 0;
-            string multiplierWordBracket = this._word.TrimStart('[').TrimEnd(']');
-            string multiplierWordCurly = this._word.TrimStart('{').TrimEnd('}');
-            string[] words;
-
-
-            if (this._word.Equals(multiplierWordBracket))
+            int scoreMultiplier = 1;
+            char[] wordCharArr = this._word.ToCharArray();
+            for (int i = 0; i < wordCharArr.Length; i++)
             {
-                words = this._word.Split(multiplierWordCurly);
-                if (words[0].Equals(""))
+                if (wordCharArr[i] == '[')
                 {
-                    words = new string[] { this._word };
-                    multiplierWordBracket = "";
-                    multiplierWordCurly = "";
-
-
+                    scoreMultiplier = 3;
+                }
+                if (wordCharArr[i] == '{')
+                {
+                    scoreMultiplier = 2;
+                }
+                if (wordCharArr[i] == '}')
+                {
+                    scoreMultiplier = 1;
+                }
+                if (wordCharArr[i] == ']')
+                {
+                    scoreMultiplier = 1;
+                }
+                if (this._scoreMap.ContainsKey(Char.ToUpper(wordCharArr[i])))
+                {
+                    scoreVal += this._scoreMap[Char.ToUpper(wordCharArr[i])] * scoreMultiplier;
                 }
             }
-            else
-            {
-                words = this._word.Split(multiplierWordBracket);
-                if (words[0].Equals(""))
-                {
-                    words = new string[] { this._word };
-                    multiplierWordBracket = "";
-                    multiplierWordCurly = "";
-                }
-            }
-
-
-            foreach (var word in words)
-            {
-                char[] wordCharArr = word.ToCharArray();
-
-
-                if (wordCharArr.Length == 0)
-                {
-                    continue;
-                }
-
-
-                if (word.Equals(multiplierWordBracket))
-                {
-                    scoreVal += scoreCounter(wordCharArr, 3);
-                    continue;
-                }
-                scoreVal += scoreCounter(wordCharArr, 1);
-            }
-
-
-
 
             return scoreVal;
         }
