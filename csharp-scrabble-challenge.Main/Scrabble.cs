@@ -59,19 +59,38 @@ namespace csharp_scrabble_challenge.Main
 
             for (int i = 0; i < Word.Length; i++)
             {
-                if (Word[i] == '{') Multiplier *= 2;
-                if (Word[i] == '[') Multiplier *= 3;
-
-                if (Word[i] == '}') Multiplier /= 2;
-                if (Word[i] == ']') Multiplier /= 3;
-
-                if (LetterValues.ContainsKey(Word[i]))
+                switch (Word[i])
                 {
-                    score += LetterValues.GetValueOrDefault(Word[i]) * Multiplier;
+                    case ('{'):
+                        if (Word[i] == '{') Multiplier *= 2;
+
+                        break;
+                    case ('['):
+                        if (Word[i] == '[') Multiplier *= 3;
+
+                        break;
+                    case ('}'):
+                        if (Word[i] == '}') Multiplier /= 2;
+
+                        break;
+                    case (']'):
+                        if (Word[i] == ']') Multiplier /= 3;
+
+                        break;
+                    default:
+                        if (LetterValues.ContainsKey(Word[i]))
+                        {
+                            score += LetterValues.GetValueOrDefault(Word[i]) * Multiplier;
+                        }
+                        else
+                        {
+                            Multiplier = 999;
+                        }
+                        break;
                 }
             }
 
-            return score;
+            return Multiplier == 1 ? score : -1;
         }
     }
 }
