@@ -58,8 +58,9 @@ s.score(); // should return 4
 Scrabble s = new Scrabble("street");
 s.score(); // should return 6
 
-Scrabble s = new Scrabble("quirky");
+Scrabble s = new Scrabble(" ");
 s.score(); // should return 22
+
 
 Scrabble s = new Scrabble("OXyPHEnBUTaZoNE");
 s.score(); // should return 41
@@ -74,4 +75,3 @@ Your solution should support the ability to define specific letters as double an
 
 ### Double or Triple Word
 Similar to above, your solution should support the ability to define double and triple word scores. To indicate a double word score, the submitted word will be enclose in a pair of curly brackets (for example `{dog}`), and for triple word score a pair of square brackets (`[dog]`). Your solution should detect these brackets and apply the correct score modifications. You should add tests for this functionality to the spec file.
-
