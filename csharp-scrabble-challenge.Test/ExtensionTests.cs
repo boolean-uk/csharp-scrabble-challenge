@@ -22,9 +22,15 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[s]treet", 8)]
         [TestCase("s{t}r[e]et", 9)]
         [TestCase("s{t[re]e}t", 18)]
-        [TestCase("s[t{re}e]t", 18)]    
-        [TestCase("s[t[re]e]t", 18)]    
-        [TestCase("s{t{re}e}t", 18)]    
+        [TestCase("s[t{re}e]t", 20)]    
+        [TestCase("s[t[re]e]t", 26)]    
+        [TestCase("s{t{re}e}t", 14)]    
+        [TestCase("dog", 5)]
+        [TestCase("d{o}g", 6)]
+        [TestCase("d[o]g", 7)]
+        [TestCase("d[o]{g}", 9)]
+        [TestCase("d[[o]{g}]", 23)]
+        [TestCase("{d[[o]{g}]}", 46)]
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
             Assert.AreEqual(this.GetWordScore(word), targetScore);

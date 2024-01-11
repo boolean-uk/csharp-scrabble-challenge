@@ -29,7 +29,7 @@ namespace csharp_scrabble_challenge.Main
             {'K',5}, //!Five points
             {'J', 8}, {'X',8}, //!Eight points
             {'Q',10}, {'Z',10} //!Ten points
-            };
+        };
 
         // Global word score
         private int _score = 0;
@@ -41,11 +41,49 @@ namespace csharp_scrabble_challenge.Main
             calulateScore(input);
         }
 
-        public int score()
-        {
+        public int score() {
             return _score;
         }
-        
+
+       
+
+        public void calulateScore(char[] arr) {
+            int i = 0; // initiate
+            int multy = 1;
+            int numBrackets = 0;
+            while (i < arr.Length) {
+                switch (arr[i]) {
+                    case '{':
+                        numBrackets++;
+                        multy *= 2;
+                        break;
+                    case '[':
+                        numBrackets++;
+                        multy *= 3;
+                        break;
+                    case ']':
+                        numBrackets--;
+                        multy /= 3;
+                        break;
+                    case '}':
+                        numBrackets--;                    
+                        multy /= 2;
+                        break;
+                    default:
+                        if (char_scores.TryGetValue(arr[i], out int defaultValue)) {
+                            _score += defaultValue * multy;
+                        }
+                        break;
+                }
+                i++;
+            }
+            //!Found an open bracket, unvallid result
+            if (numBrackets!=0) {
+                _score = 0;
+            } 
+            
+        }
+        /*
         public void calulateScore(char[] arr) {
             int i = 0; // initiate
             while (i < arr.Length) {
@@ -68,6 +106,12 @@ namespace csharp_scrabble_challenge.Main
                             i++;
                         }
                         break;
+                    case ']':
+
+                        break;
+                    case '}':
+
+                        break;
                     default:
                         if (char_scores.TryGetValue(arr[i], out int defaultValue)) {
                             _score += defaultValue;
@@ -76,9 +120,8 @@ namespace csharp_scrabble_challenge.Main
                 }
                 i++;
             }
-
-            
         }
+        */
 
 /*
         public void calulateScoreCore(char[] arr) {
