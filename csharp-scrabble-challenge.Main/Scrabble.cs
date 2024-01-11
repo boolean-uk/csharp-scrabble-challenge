@@ -32,31 +32,34 @@ namespace csharp_scrabble_challenge.Main
             int result = 0;
             int letterBonus = 1;
             int value;
-            for (int i = 0; i < chars.Length; i++)
+            if (chars.Length > 0)
             {
-                if (i != 0 && i !=  chars.Length - 1)
+                for (int i = 0; i < chars.Length; i++)
                 {
-                    if (chars[i - 1] == '{'  && chars[i + 1] == '}')
+                    if (i != 0 && i != chars.Length - 1)
                     {
-                        letterBonus = 2;
+                        if (chars[i - 1] == '{' && chars[i + 1] == '}')
+                        {
+                            letterBonus = 2;
+                        }
+                        if (chars[i - 1] == '[' && chars[i + 1] == ']')
+                        {
+                            letterBonus = 3;
+                        }
                     }
-                    if (chars[i - 1] == '[' && chars[i + 1] == ']')
-                    {
-                        letterBonus = 3;
-                    }
+                    wordMap.TryGetValue(chars[i].ToString(), out value);
+                    result += letterBonus * value;
+                    letterBonus = 1;
                 }
-                wordMap.TryGetValue(chars[i].ToString(), out value);
-                result += letterBonus * value;
-                letterBonus = 1;
-            }
 
-            if (chars[0] == '{' && chars[chars.Length - 1] == '}')
-            {
-                result = result * 2;
-            }
-            if (chars[0] == '[' && chars[chars.Length - 1] == ']')
-            {
-                result = result * 3;
+                if (chars[0] == '{' && chars[chars.Length - 1] == '}')
+                {
+                    result = result * 2;
+                }
+                if (chars[0] == '[' && chars[chars.Length - 1] == ']')
+                {
+                    result = result * 3;
+                }
             }
             
             return result;
