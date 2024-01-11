@@ -3,6 +3,6 @@ using csharp_scrabble_challenge.Main;
 
 
 
-Scrabble scrabble = new Scrabble("Hello");
+Scrabble scrabble = new Scrabble("He{l}lo");
 
 Console.WriteLine(scrabble.score());

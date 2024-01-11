@@ -45,12 +45,29 @@ namespace csharp_scrabble_challenge.Main
         public int score()
         {
             //TODO: score calculation code goes here
-            char[] chars = _word.ToUpper().ToArray();
+            char[] chars = _word.ToUpper().Trim().ToArray();
+            int multiplier = 1;
             foreach (char letter in chars)
             {
-                if (_scoreSheet.ContainsKey(letter))
+                if(_scoreSheet.ContainsKey(letter))
                 {
-                    totalScore += _scoreSheet[letter];
+                    totalScore += multiplier * _scoreSheet[letter];
+                }
+                else if(letter == '{')
+                {
+                    multiplier *= 2;
+                }
+                else if(letter == '[')
+                {
+                    multiplier *= 3;
+                }
+                else if (letter == '}')
+                {
+                    multiplier /= 2;
+                }
+                else if (letter == ']')
+                {
+                    multiplier /= 3;
                 }
                 else
                 {
