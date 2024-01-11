@@ -1,0 +1,39 @@
+﻿@page "/"
+@using csharp_scrabble_challenge.Main
+@inject HttpClient Http
+
+<div class="app-container">
+<h3>Scrabble Score Calculator</h3>
+
+<input @bind="userInputWord" placeholder="Enter your word" />
+<button @onclick="CalculateScore">Calculate Score</button>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p class="error-message">@ErrorMessage</p>
+    }
+    @if(score >= 0)
+{
+    <p>The score for the word '@userInputWord' is: @score</p>
+}
+</div>
+@code {
+    private string userInputWord = string.Empty;
+    private int score = -1;
+    private WordList wordList;
+    private string ErrorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        wordList = new WordList();
+        await wordList.InitializeAsync(Http);
+    }
+
+    private void CalculateScore()
+    {
+        var game = new Scrabble(userInputWord, wordList);
+        score = game.score();
+        //adding a check for error
+        ErrorMessage = game.ErrorMessage;
+    }
+}
