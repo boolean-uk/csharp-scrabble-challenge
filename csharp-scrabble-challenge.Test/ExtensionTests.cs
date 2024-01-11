@@ -23,6 +23,15 @@ namespace csharp_scrabble_challenge.Test
             Assert.AreEqual(this.GetWordScore(word), targetScore);
         }
 
+        [TestCase("qu{i}rky", 23)] // Double letter
+        [TestCase("qu[i]rky", 24)] // Triple letter
+        [TestCase("{qu[i]rky}", 48)] // Triple letter and double word
+        [TestCase("[quir[k]y]",96)] // Triple letter and triple word
+        public void MyOwnExtendedCriteriaTests(string word, int targetScore)
+        {
+            Assert.AreEqual(targetScore, this.GetWordScore(word));
+        }
+
         private int GetWordScore(string word) => new Scrabble(word).score();
     }
 }
