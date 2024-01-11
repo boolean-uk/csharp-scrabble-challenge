@@ -53,81 +53,24 @@ namespace csharp_scrabble_challenge.Main
         {
             //TODO: score calculation code goes here 
             int score = 0;
-            int multiplier = 1;
+
             for (int i = 0; i < _word.Length; i++)
             {
                 string letter = _word[i].ToString().ToUpper();
-                foreach(var item in _letterValue)
+                foreach (var item in _letterValue)
                 {
-                    if (letter.Equals("{") && letter[i + 1].Equals(item.Key) && letter.Equals("}"))
-                    {
-                        
-                        score += item.Value * 2;
-                    }
-                    else if (letter.Equals("[") && letter[i + 1].Equals(item.Key) && letter.Equals("]"))
+                    if (letter.Equals(item.Key))
                     {
 
-                        score += item.Value * 3;
-                    }
-                    else if (letter.Equals(item.Key))
-                    {
-                        
                         score += item.Value;
-                        
+
                     }
                 }
             }
-
-
-            return score;
-
-
-        }
-
-        public int scores()
-        {
-            int score = 0;
-
-            for (int i = 0; i < _word.Length; i++)
-            {
-                char currentChar = _word[i];
-
-                // Check for double score
-                if (i + 2 < _word.Length && _word[i + 1] == '{' && _word[i + 2] == '}')
-                {
-                    string doubleLetter = _word.Substring(i + 1, 1).ToUpper();
-                    score += 2 * GetLetterScore(doubleLetter);
-                    i += 2; // Skip the double letter and closing bracket
-                }
-                // Check for triple score
-                else if (i + 2 < _word.Length && _word[i + 1] == '[' && _word[i + 2] == ']')
-                {
-                    string tripleLetter = _word.Substring(i + 1, 1).ToUpper();
-                    score += 3 * GetLetterScore(tripleLetter);
-                    i += 2; // Skip the triple letter and closing bracket
-                }
-                else
-                {
-                    string letter = currentChar.ToString().ToUpper();
-                    score += GetLetterScore(letter);
-                }
-            }
-
             return score;
         }
 
-        private int GetLetterScore(string letter)
-        {
-            if (_letterValue.ContainsKey(letter))
-            {
-                return _letterValue[letter];
-            }
-            else
-            {
-                // Assuming default score for a letter not found in _letterValue is 1
-                return 0;
-            }
-        }
+        
 
         public Dictionary<string, int> letterValues { get { return _letterValue; } }
         public string word {  get { return _word; } }
