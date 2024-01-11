@@ -49,7 +49,7 @@ namespace csharp_scrabble_challenge.Main
             }
             if (multiplier != 1)
             {
-                return -1;
+                return 0;
             }
 
             return score;
