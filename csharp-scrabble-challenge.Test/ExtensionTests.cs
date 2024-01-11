@@ -21,7 +21,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("{h}ous{e}", 13)]
         [TestCase("[{h}ous{e}]", 39)]
         [TestCase("[h}ous{e}]", -1)] //Error case
-        [TestCase("[{h}o1s{e}]", -1)]
+        [TestCase("[{h}o1s{e}]", 0)]
 
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
