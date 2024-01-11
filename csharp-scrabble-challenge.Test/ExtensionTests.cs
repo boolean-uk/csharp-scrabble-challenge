@@ -24,5 +24,14 @@ namespace csharp_scrabble_challenge.Test
         }
 
         private int GetWordScore(string word) => new Scrabble(word).score();
+
+        [TestCase("{a}s", 3)]
+        [TestCase("{z}alo", 23)]
+        [TestCase("Els[a]", 6)]
+        public void shouldGiveDoublePointForLetter(string word, int actual)
+        {
+            int score = this.GetWordScore(word);
+            Assert.AreEqual(score, actual);
+        }
     }
 }
