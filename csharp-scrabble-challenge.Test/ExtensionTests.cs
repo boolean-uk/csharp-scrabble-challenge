@@ -11,7 +11,9 @@ namespace csharp_scrabble_challenge.Test
     [TestFixture]
     public class ExtensionTests
     {
-
+        [TestCase("Ann[e{m]o}on", 28)]
+        [TestCase("str{e}et", 7)] //extension double letter
+        [TestCase("[s]treet", 8)] //extension triple letter
         [TestCase("{street}", 12)] //extension double word
         [TestCase("[street]", 18)] //extension triple word
         [TestCase("{quirky}", 44)] //extension double word
