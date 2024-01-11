@@ -84,13 +84,13 @@ namespace csharp_scrabble_challenge.Main
                         }
                         else
                         {
-                            Multiplier = 999;
+                            Multiplier = 999; //If anything other than a letter is found, mess up the multiplier beyond recognition.
                         }
                         break;
                 }
             }
 
-            return Multiplier == 1 ? score : -1;
+            return Multiplier == 1 ? score : 0;
         }
     }
 }
