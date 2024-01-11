@@ -25,6 +25,7 @@ namespace csharp_scrabble_challenge.Main
             //TODO: do something with the word variable
             _originalWord = word;
             _word = ProcessWord(_originalWord);
+            interpretMultiplier(ref _word);
             populatePointsDict();
 
         }
@@ -106,18 +107,20 @@ namespace csharp_scrabble_challenge.Main
             int index = word.IndexOf(delim1) + 1;
             if (distance == 2)
             {
+                removeToken(ref word, delim1);
+                removeToken(ref word, delim2);
                 letterList.Add(word.Substring(index, 1));
             }
-            else if (distance == (word.Length - 2))
+            else if (distance == (word.Length - 1))
             {
+                removeToken(ref word, delim1);
+                removeToken(ref word, delim2);
                 WordList.Add(word);
             }
             else
             {
                 throw new ArgumentException("Invalid letter/word multiplier");
             }
-            removeToken(ref word, delim1);
-            removeToken(ref word, delim2);
         }
 
 
@@ -158,6 +161,8 @@ namespace csharp_scrabble_challenge.Main
                     res += _points.GetValueOrDefault(theLetter, 0);
                 }
             }
+            if (_doubleWords.Contains(_word)) { res = res * 2; }
+            if (_trippleWords.Contains(_word)) { res = res * 3; }
 
             return res;
 
