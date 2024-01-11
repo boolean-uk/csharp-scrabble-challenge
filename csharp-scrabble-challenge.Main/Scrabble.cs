@@ -53,7 +53,10 @@ namespace csharp_scrabble_challenge.Main
                 if (letter == '[')
                 {
                     trippleWord = true;
+                    continue;
                 }
+                else if (letter == ']')
+                    continue;
 
                 if (onePoint.Contains(letter))
                     letterScore += 1;
