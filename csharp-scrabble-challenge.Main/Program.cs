@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using csharp_scrabble_challenge.Main;
+
+Scrabble s = new Scrabble("OXyPHEnBUTaZoNE");
+Console.WriteLine(s.score());
