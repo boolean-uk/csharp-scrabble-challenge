@@ -30,13 +30,11 @@ namespace csharp_scrabble_challenge.Main
             _word = word;
         }
 
-        public int score()  // "street"
+        public int score()
         {
             //TODO: score calculation code goes here
             List<int> calc = new List<int>();
             Dictionary<char, int> multiplier = new Dictionary<char, int>();
-
-            Console.WriteLine(this._word);
 
             // prehandling - clean the string
             this._word.Trim().Replace("\n", "").Replace("\t", "").Replace("\f", "").Replace("\b", "").Replace("\r", "");
@@ -50,7 +48,8 @@ namespace csharp_scrabble_challenge.Main
                 string s = Regex.Match(this._word, pattern_wv).Value.Replace("{", "").Replace("}", "")
                     .Replace("[", "").Replace("]", "");
 
-                string ns = String.Join("", s.Distinct());
+                string ns = String.Join("", s.ToUpper().Distinct());
+
 
                 foreach (char c in ns)
                 {
@@ -64,15 +63,22 @@ namespace csharp_scrabble_challenge.Main
                 string pattern_wv = @"\[(.*?)\]";
                 string s = Regex.Match(this._word, pattern_wv).Value.Replace("[", "").Replace("]", "")
                     .Replace("{", "").Replace("}", "");
-                string ns = String.Join("", s.Distinct());
 
-                Console.WriteLine(ns);
+                string ns = String.Join("", s.ToUpper().Distinct());
 
                 foreach (char c in ns)
                 {
                     char cc = Char.ToUpper(c);
 
-                    multiplier[cc] = 3;
+                    if (multiplier.Keys.Contains(cc))
+                    {
+                        multiplier[cc] = multiplier[cc] * 3;
+                    }
+
+                    else
+                    {
+                        multiplier[cc] = 3;
+                    }
 
                 }
 
