@@ -20,7 +20,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[OXyPHEnBUTaZoNE]", 123)]
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
-            Assert.AreEqual(this.GetWordScore(word), targetScore);
+            Assert.AreEqual(targetScore, this.GetWordScore(word));
         }
 
         private int GetWordScore(string word) => new Scrabble(word).score();
