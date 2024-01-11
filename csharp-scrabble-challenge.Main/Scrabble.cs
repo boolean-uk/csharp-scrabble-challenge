@@ -68,12 +68,12 @@ namespace csharp_scrabble_challenge.Main
                     }
                 }
             }
-            if (_word.Contains("[")) 
+            if (_word.Contains("[") && _word.Contains("]")) 
             {
                 score = score * 3; //extension triple word score
             }
-            else if (_word.Contains("{"))
-            {
+            else if (_word.Contains("{") && _word.Contains("}"))
+            { 
                 score = score * 2; //extension double word score
             }
 
