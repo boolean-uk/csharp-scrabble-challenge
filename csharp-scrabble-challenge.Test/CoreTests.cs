@@ -20,6 +20,6 @@ namespace csharp_scrabble_challenge.Test
             Assert.AreEqual(this.GetWordScore(word), targetScore);
         }
 
-        private int GetWordScore(string word) => new Scrabble(word).score();
+        private int GetWordScore(string word) => new Scrabble(word).Score();
     }
 }

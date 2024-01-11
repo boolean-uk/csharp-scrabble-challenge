@@ -30,18 +30,13 @@ namespace csharp_scrabble_challenge.Main
 
         public string Word { get { return _word; } set { _word = value.ToLower(); } }
 
-        public int score()
+        public int Score()
         {
             if (Word.Length == 0)
             {
                 return 0;
             }
-            int score = 0;
-            foreach (char c in Word)
-            {
-                score += CharacterScore(c);
-            }
-            return score * ScoreMultiplier();
+            return AddScore(Word);
         }
 
         public int CharacterScore(char c)
@@ -53,17 +48,27 @@ namespace csharp_scrabble_challenge.Main
             return 0;
         }
 
-        private int ScoreMultiplier()
+        private int AddScore(string str, int multiplier = 1)
         {
-            if (Word[0] == '{' && Word[Word.Length - 1] == '}') {
-                return 2;
-            }
-            else if (Word[0] == '[' && Word[Word.Length - 1] == ']')
+            int score = 0;
+            for (int i = 0; i < str.Length; i++)
             {
-                return 3;
+                switch (str[i])
+                {
+                    case '{':
+                        return score + AddScore(str.Substring(i + 1), multiplier * 2);
+                    case '[':
+                        return score + AddScore(str.Substring(i + 1), multiplier * 3);
+                    case '}':
+                        return score + AddScore(str.Substring(i + 1), multiplier / 2);
+                    case ']':
+                        return score + AddScore(str.Substring(i + 1), multiplier / 3);
+                    default:
+                        score += CharacterScore(str[i]) * multiplier;
+                        break;
+                }
             }
-            return 1;
+            return score;
         }
-
     }
 }
