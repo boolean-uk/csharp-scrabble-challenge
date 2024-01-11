@@ -37,11 +37,13 @@ namespace csharp_scrabble_challenge.Main
                     score += _wordPoint[item] * multiplier;
                 }
                 else if (item == '{')
-                    multiplier = 2;
+                    multiplier *= 2;
                 else if (item == '[')
-                    multiplier = 3;
-                else if (item == '}' || item == ']')
-                    multiplier = 1;
+                    multiplier *= 3;
+                else if (item == '}')
+                    multiplier /= 2;
+                else if (item == ']')
+                    multiplier /= 3;
             }
             return score;
             //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
