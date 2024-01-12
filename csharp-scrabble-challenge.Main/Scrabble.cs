@@ -11,8 +11,8 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
-        private Dictionary<string, int> _letterValue;
-        private string _word;
+        public Dictionary<string, int> _letterValue;
+        public string _word;
         public Scrabble(string Word)
         {
             //TODO: do something with the word variable
@@ -70,7 +70,36 @@ namespace csharp_scrabble_challenge.Main
             return score;
         }
 
-        
+        //public int score()
+        //{
+        //    int score = 0;
+
+        //    foreach(char letter in _word)
+        //    {
+        //        if(_letterValue.ContainsKey(letter.ToString().ToUpper()))
+        //        {
+
+        //        }
+        //    }
+
+
+        //    return score;
+        //}
+
+        //private int GetLetterScore(string letter)
+        //{
+        //    if (_letterValue.ContainsKey(letter))
+        //    {
+        //        return _letterValue[letter];
+        //    }
+        //    else
+        //    {
+        //        // Assuming default score for a letter not found in _letterValue is 1
+        //        return 0;
+        //    }
+        //}
+
+
 
         public Dictionary<string, int> letterValues { get { return _letterValue; } }
         public string word {  get { return _word; } }
