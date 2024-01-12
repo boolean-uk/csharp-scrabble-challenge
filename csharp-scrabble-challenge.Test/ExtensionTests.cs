@@ -32,6 +32,17 @@ namespace csharp_scrabble_challenge.Test
             Assert.AreEqual(targetScore, this.GetWordScore(word));
         }
 
+        [TestCase("{h}ous{e}", 13)]
+        [TestCase("[{h}ous{e}]", 39)]
+        [TestCase("[h}ous{e}]", -0)]
+        [TestCase("[{h}o1s{e}]", 0)]
+        [TestCase("d[[o]{g}]", 23)]
+        [TestCase("{d[[o]{g}]}", 46)]
+        public void LucaExtendedCriteriaTests(string word, int targetScore) 
+        {
+            Assert.AreEqual(targetScore, this.GetWordScore(word));
+        }
+
         private int GetWordScore(string word) => new Scrabble(word).score();
     }
 }
