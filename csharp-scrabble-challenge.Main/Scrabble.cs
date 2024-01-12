@@ -46,14 +46,18 @@ namespace csharp_scrabble_challenge.Main
                         _mult *= 2;
                         break;
                     case '}':
+                        if (_mult % 2 != 0) return 0;
                         _mult /= 2;
                         break;
                     case '[':
                         _mult *= 3;
                         break;
                     case ']':
+                        if (_mult % 3 != 0) return 0;
                         _mult /= 3;
                         break;
+                    case var expression when !Char.IsLetter(c):
+                            return 0;
                     default:
                         break;
                 }
