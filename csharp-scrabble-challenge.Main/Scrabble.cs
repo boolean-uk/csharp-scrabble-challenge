@@ -33,10 +33,6 @@ namespace csharp_scrabble_challenge.Main
         {
             //TODO: score calculation code goes here
             //TODO: Remove this line when the code has been written
-            Boolean tripleActive = false;
-            Boolean doubleActive = false;
-
-
             int points = 0;
             foreach (char c in _word)
             {
