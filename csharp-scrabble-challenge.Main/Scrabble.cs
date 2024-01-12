@@ -19,13 +19,18 @@ namespace csharp_scrabble_challenge.Main
         private List<string> _tripleWords = new List<string>();
 
         private Dictionary<string, int> _points = new Dictionary<string, int>();
+        int _version;
 
         public Scrabble(string word)
         {
             //TODO: do something with the word variable
+            _version = 2;
             _originalWord = word;
             _word = ProcessWord(_originalWord);
-            interpretMultiplier(ref _word);
+            if (_version == 1)
+            {
+                interpretMultiplier(ref _word);
+            }
             populatePointsDict();
 
         }
@@ -45,7 +50,6 @@ namespace csharp_scrabble_challenge.Main
                 {
                     removeToken(ref processed, token);
                 }
-                
             }
             return processed;
         }
@@ -146,7 +150,6 @@ namespace csharp_scrabble_challenge.Main
             }
         }
 
-        // This is kinda hideous
         /// <summary>
         /// Populate the dictionary that is used to calculate points. 
         /// </summary>
@@ -168,32 +171,105 @@ namespace csharp_scrabble_challenge.Main
             foreach (string val in value10) { _points.Add(val, 10); }
         }
 
+        /// <summary>
+        /// Version 2 solution. Takes the word provided and calculates the score based on a shared bracket multipler and iteration
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns>Int of the calculated score</returns>
+        internal void recursiveSwitchScoring(string word, ref int res, ref int multiplier, int i = 0)
+        {
+            char letter = word[i];
+            switch (letter)
+            {
+                case '{':
+                    multiplier *= 2;
+                    break;
+                case '}':
+                    multiplier /= 2;
+                    break;
+                case '[':
+                    multiplier *= 3;
+                    break;
+                case ']':
+                    multiplier /= 3;
+                    break;
+                default:
+                    res += _points.GetValueOrDefault<string, int>(letter.ToString(), 0) * multiplier;
+                    break;
+             }
+            if (i < word.Length-1)
+            {
+                recursiveSwitchScoring(word, ref res, ref multiplier, i + 1);
+            }
+            return;
+        }
+
+        internal bool validateWord(string word) 
+        {
+            // If number of {/[ and }/] dont match, i.e. not closed brackets indicate invalid word by returning false.
+            if (
+                (word.Count(c => c == '{') != word.Count(c => c == '}')) ||
+                (word.Count(c => c == '[') != word.Count(c => c == ']')))
+            { 
+                return false; 
+            }
+
+            // Check if the word contains any numbers, in which case it would be invalid and return false. 
+            if ( word.Count(char.IsDigit) > 0 ) 
+            {
+                return false;
+            }
+            return true;
+        }
+
         public int score()
         {
             //TODO: score calculation code goes here
             int res = 0;
 
-            for (int i = 0; i < _word.Length; i++) 
+            // Validate for only letter/brackets and all brackets enclosed.
+            if (!validateWord(_word)) 
             {
-                string theLetter = _word[i].ToString();
-                if (_doubleLetters.Contains(theLetter))
-                {
-                    res += (_points.GetValueOrDefault(theLetter, 0) * 2);
-                } else if (_tripleLetters.Contains(theLetter))
-                {
-                    res += (_points.GetValueOrDefault(theLetter, 0) * 3);
-                } else 
-                {
-                    res += _points.GetValueOrDefault(theLetter, 0);
-                }
+                return res;
             }
-            // Multiply the entire result if double or triple word.
-            if (_doubleWords.Contains(_word)) { res = res * 2; }
-            if (_tripleWords.Contains(_word)) { res = res * 3; }
 
-            return res;
+            if (_word.Length == 0) 
+            { return res; }
 
-            throw new NotImplementedException(); //TODO: Remove this line when the code has been written
+            if (_version == 1) // Original, Passed extended tests, but not the luca tests. 
+            {
+                for (int i = 0; i < _word.Length; i++)
+                {
+                    string theLetter = _word[i].ToString();
+                    if (_doubleLetters.Contains(theLetter))
+                    {
+                        res += (_points.GetValueOrDefault(theLetter, 0) * 2);
+                    }
+                    else if (_tripleLetters.Contains(theLetter))
+                    {
+                        res += (_points.GetValueOrDefault(theLetter, 0) * 3);
+                    }
+                    else
+                    {
+                        res += _points.GetValueOrDefault(theLetter, 0);
+                    }
+                }
+                // Multiply the entire result if double or triple word.
+                if (_doubleWords.Contains(_word)) { res = res * 2; }
+                if (_tripleWords.Contains(_word)) { res = res * 3; }
+
+                return res;
+            }
+            else if (_version == 2) // New version
+            { // Idea: Iterative switch, switch determine either value or increase/decrease a multiplier, then recursively progress until full word iterated through.
+                int multiplier = 1;
+                recursiveSwitchScoring(_word, ref res, ref multiplier);
+                return res;
+            } 
+            else 
+            {
+                return res;
+            }
         }
     }
 }
