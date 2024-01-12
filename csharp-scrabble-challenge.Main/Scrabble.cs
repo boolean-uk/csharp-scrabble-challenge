@@ -19,7 +19,8 @@
                 { 'Q', 10 }, { 'Z', 10 }
             };
         }
-
+        //"[{h}ous{e}]"
+        // 6*4 + 3*1 + 3*1 + 3*1 + 6*1 = 24 + 3 + 3 + 3 + 6 = 39
         public int score()
         {
             //TODO: score calculation code goes here
@@ -30,25 +31,23 @@
                 switch (_word[i])
                 {
                     case '{':
-                        scoreMultiplier = 2;
-                        i++;
-                        break;
+                        scoreMultiplier *= 2;
+                        continue;
                     case '[':
-                        scoreMultiplier = 3;
-                        i++;
-                        break;
+                        scoreMultiplier *= 3;
+                        continue;
                     case '}':
-                        scoreMultiplier = 1;
-                        i++;
-                        break;
+                        if (scoreMultiplier % 2 != 0) return 0;
+                        scoreMultiplier /= 2;
+                        continue;
                     case ']':
-                        scoreMultiplier = 1;
-                        i++;
-                        break;
+                        if (scoreMultiplier % 3 != 0) return 0;
+                        scoreMultiplier /= 3;
+                        continue;
                     default:
                         break;
                 }
-                if (i >= _word.Length) continue;
+                if (!char.IsLetter(_word[i])) return 0;
                 score += map.GetValueOrDefault(_word[i]) * scoreMultiplier;
             }
             return score;

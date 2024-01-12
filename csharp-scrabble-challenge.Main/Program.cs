@@ -1,5 +1,5 @@
 ﻿using csharp_scrabble_challenge.Main;
 
-Scrabble scrabble = new Scrabble("word");
+Scrabble scrabble = new Scrabble("[{h}ous{e}]");
 
 Console.WriteLine(scrabble.score());
