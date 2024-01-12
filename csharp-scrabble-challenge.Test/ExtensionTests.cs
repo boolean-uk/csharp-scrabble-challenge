@@ -18,9 +18,15 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[quirky]", 66)] //extension triple word
         [TestCase("{OXyPHEnBUTaZoNE}", 82)]
         [TestCase("[OXyPHEnBUTaZoNE]", 123)]
+        [TestCase("b[o]t", 7)]
+        [TestCase("te{s}t", 5)]
+        [TestCase("{h}ous{e}", 13)]
+        [TestCase("[{h}ous{e}]", 39)]
+        [TestCase("[h}ous{e}]", 0)] //Error case
+        [TestCase("[{h}o1s{e}]", 0)] //Error case
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
-            Assert.AreEqual(this.GetWordScore(word), targetScore);
+            Assert.AreEqual(targetScore, this.GetWordScore(word));
         }
 
         private int GetWordScore(string word) => new Scrabble(word).score();
