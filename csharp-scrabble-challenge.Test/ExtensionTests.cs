@@ -20,6 +20,11 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[OXyPHEnBUTaZoNE]", 123)]
         [TestCase("d{o}g", 6)]
         [TestCase("d[o]g", 7)]
+        [TestCase("{h}ous{e}", 13)]
+        [TestCase("[{h}ous{e}]", 39)]
+        [TestCase("[h}ous{e}]", 0)]
+        [TestCase("{d[[o]{g}]}", 46)]
+        [TestCase("d[[o]{g}]", 23)] //2 6 10 || 2 9 12
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
             Assert.AreEqual(this.GetWordScore(word), targetScore);

@@ -32,39 +32,67 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
-            int points = 0;
-
-            //Calculate points ONE time.
-            points = calculatePoints(Letters);
-
-            //Find double modifiers and double it.
-            if (Word.Contains("{") && Word.Contains("}"))
+            //awful code to check in case doubles and trips are opened and not closed
+            int bracketCount = 0;
+            int squareCount = 0;
+            foreach (char c in Letters)
             {
-                int start = Word.IndexOf("{");
-                int end = Word.IndexOf("}");
-                points += calculatePoints(Word.Substring(start, end - start).ToCharArray());
+                if (c == '[')
+                {
+                    squareCount++;
+                }
+                if (c == ']')
+                {
+                    squareCount--;
+                }
+                if (c == '{')
+                {
+                    bracketCount++;
+                }
+                if (c == '}')
+                {
+                    bracketCount--;
+                }
             }
-            
-            //Find triple modifiers and triple it.
-            if (Word.Contains("[") && Word.Contains("]"))
+            if (bracketCount != 0 || squareCount != 0)
             {
-                int start = Word.IndexOf("[");
-                int end = Word.IndexOf("]");
-                points += calculatePoints(Word.Substring(start, end - start).ToCharArray()) * 2; //multiply by 2 since they have already been scored one time.
+                return 0;
             }
 
-            return points;
+            return calculatePoints(Letters);
 
         }
 
         public int calculatePoints(char[] letters)
         {
             int points = 0;
+            int multiplier = 1;
+
             foreach (char ch in letters)
             {
+                //Very relative. This option decides that the multipliers themselves are multiplied with each other (2*3=6).
+                //Another option is that multipliers are merely added together (2+3=5). I went with multiply, as the tests made by people on discord used this.
+                if (ch == '{')
+                {
+                    multiplier *= 2;
+                }
+                if (ch == '[')
+                {
+                    multiplier *= 3;
+                }
+                if (ch == '}')
+                {
+                    multiplier /= 2;
+                }
+                if (ch == ']')
+                {
+                    multiplier /= 3;
+                }
+
+
                 if (PointLookup.ContainsKey(ch))
                 {
-                    points += PointLookup.GetValueOrDefault(ch);
+                    points += PointLookup.GetValueOrDefault(ch) * multiplier;
                 }
             }
             return points;
