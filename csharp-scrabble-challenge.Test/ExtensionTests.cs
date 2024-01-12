@@ -27,6 +27,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[{h}o1s{e}]", 0)]
         [TestCase("d[[o]{g}]", 23)]
         [TestCase("{d[[o]{g}]}", 46)]
+        [TestCase("[Football", 0)]
 
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
