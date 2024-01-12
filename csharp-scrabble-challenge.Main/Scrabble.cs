@@ -16,10 +16,10 @@ namespace csharp_scrabble_challenge.Main
             { 'V', 4}, { 'W', 4}, { 'X', 8}, { 'Y', 4}, { 'Z', 10}
         };
 
-        string[] illegalWords = { "\a", "\b" , "\n" , "\r" , "\f", "\t", "\v"};
+        string[] _illegalWords = { "\a", "\b" , "\n" , "\r" , "\f", "\t", "\v"};
+        int _letterMultiplier = 1;
 
-
-        private string _inputWordBuffer;
+        private string _inputWordBuffer = "";
 
         public Scrabble(string word)
         {
@@ -37,59 +37,71 @@ namespace csharp_scrabble_challenge.Main
         private string RemoveIllegalWords(string word)
         {
             // Remove illegal words
-            for (int i = 0; i < illegalWords.Length; i++)
+            for (int i = 0; i < _illegalWords.Length; i++)
             {
-                word.Replace(illegalWords[i], "");
+                word.Replace(_illegalWords[i], "");
             }
             return word;
         }
 
         private int MultiplierValue(char c)
         {
-            int multiplierVal = 0;
-
             switch (c)
             {
                 case '[':
-                    multiplierVal += 2;
+                    _letterMultiplier *= 3;
                     break;
                 case '{':
-                    multiplierVal += 1;
+                    _letterMultiplier *= 2;
                     break;
 
                 case ']':
-                    multiplierVal += 2;
+                    _letterMultiplier /= 3;
                     break;
                 case '}':
-                    multiplierVal -= 1;
+                    _letterMultiplier /= 2;
                     break;
                 default:
                     break;
             }
 
-            return multiplierVal;
+            if (_letterMultiplier < 1)
+                return _letterMultiplier = 1;
+            return _letterMultiplier;
         }
 
         public int score()
         {
             int result = 0;
 
-            int letterMultiplier = 1;
+            // Check for bracket errors
+            char[] bracketTypes = new char[3] { '(', '{', '[' };
+            char[] bracketTypesReverse = new char[3] { ')', '}', ']' };
 
+            for (int i = 0; i < bracketTypes.Length; i++)
+                if (_inputWordBuffer.Count(c => c == bracketTypes[i]) !=
+                    _inputWordBuffer.Count(c => c == bracketTypesReverse[i]) &&
+                    _inputWordBuffer.Count(c => c == bracketTypesReverse[i]) != 0
+                     )
+                {
+                    return -1;
+                }
+
+            // Check for numbers
+            if (_inputWordBuffer.Any(char.IsDigit))
+                return 0;
+
+            // Calculate score
             foreach (char c in _inputWordBuffer)
             {
                 // Calc multiplier
-                letterMultiplier += MultiplierValue(c);
-                if (MultiplierValue(c) > 0)
-                    continue;
-                if (letterMultiplier < 1)
-                    letterMultiplier = 1;
+                MultiplierValue(c);
 
                 // Check if letter has a value, if so: add to score
                 if (_letterValue.ContainsKey(c))
                 {
                     _letterValue.TryGetValue(c, out int value);
-                    result += value * letterMultiplier;
+                    result += value * _letterMultiplier;
                 }
             }
 
