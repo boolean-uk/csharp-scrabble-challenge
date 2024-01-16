@@ -10,7 +10,7 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
         // Create a string which contains all letters of the alphabet
-        public string letters { get; set; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public string letters { get; set; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]";
 
         // Create a dict that have the letters as values, and points as keys
         public Dictionary<int, string> pointsDict { get; set; } = new Dictionary<int, string>()
@@ -36,7 +36,6 @@ namespace csharp_scrabble_challenge.Main
                 chars.Add(char.ToUpper(c));
             }
             
-            //TODO: do something with the word variable
         }
         
 
@@ -46,22 +45,29 @@ namespace csharp_scrabble_challenge.Main
             //list where all the points are stored
             List<int> scoreList = new List<int>();
 
-            // loop through every char and att points to scorelist
+            //To take care of double or triple words
+            int multiplier = 1;
+            // loop through every char and add points to scorelist
             foreach (char c in chars)
             {
+                if (c == '{') { multiplier = multiplier * 2; }
+                
+                else if (c == '}') { multiplier = multiplier / 2; } 
+                
+                else if (c == '[') { multiplier = multiplier * 3; }
+
+                else if (c == ']') { multiplier = multiplier / 3; }
+            
                 
                 foreach (var kvp in pointsDict) 
                 {
                     if (kvp.Value.Contains(c)) 
                     {
-                        scoreList.Add(kvp.Key);
+                        scoreList.Add((kvp.Key) * multiplier);
                     }
                 }
             }
-            // Sum up all points to total score
             return scoreList.Sum();
-            //TODO: score calculation code goes here
-            //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
         }
     }
 }
