@@ -22,4 +22,4 @@ namespace csharp_scrabble_challenge.Test
 
         private int GetWordScore(string word) => new Scrabble(word).score();
     }
-}
+} 
