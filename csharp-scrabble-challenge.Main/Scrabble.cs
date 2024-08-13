@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace csharp_scrabble_challenge.Main
@@ -64,6 +65,9 @@ namespace csharp_scrabble_challenge.Main
 
 
             char[] letters = _word.ToCharArray();
+            string pattern = @"^[a-z\[\]\{\}]+$";
+            if (!Regex.IsMatch(letters, pattern)) return 0;
+
             int[] scores = letters.Where(letter => _values.ContainsKey(letter)).Select(value => _values[value]).ToArray();
             int sum = 0;
 
@@ -75,7 +79,7 @@ namespace csharp_scrabble_challenge.Main
                 else if (score == -300) _multiplier /= 3;
                 else sum += score * _multiplier;
             }
-
+            if (_multiplier != 1) return 0;
             return sum;
         }
     }
