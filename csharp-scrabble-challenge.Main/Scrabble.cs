@@ -24,39 +24,65 @@ namespace csharp_scrabble_challenge.Main
         public Scrabble(string word)
         {
             _word = word.Trim().ToLower();
-            //TODO: do something with the word variable
         }
 
         public int score()
         {
-            //TODO: score calculation code goes here
-            //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
-            int sum = 0;
-            int scoreMultiplier = 1;
-            for (int i = 0; i < _word.Length; i++)
+            if (_word == null) return 0;
+            if (_word.Length == 0) return 0;
+            string word = _word;
+            int wordScoreMultiplier = 1;
+            
+            if ((word.Count(x => x == '{') + word.Count(x => x == '}')) % 2 != 0) return 0;
+            if ((word.Count(x => x == '[') + word.Count(x => x == ']')) % 2 != 0) return 0;
+            
+            if (word[0] == '[' && word[word.Length - 1] == ']' && word[2] != ']')
             {
-                if (_word[i] == '{')
+                word = word.Substring(word.IndexOf('[') + 1, word.LastIndexOf(']') - 1);
+                wordScoreMultiplier = 3;
+            }
+            else if (word[0] == '{' && word[word.Length - 1] == '}' && word[2] != '}')
+            {
+                word = word.Substring(word.IndexOf('{') + 1, word.LastIndexOf('}') - 1);
+                wordScoreMultiplier = 2;
+            }
+            
+            int sum = 0;
+            int letterScoreMultiplier = 1;
+            foreach (char character in word)
+            {
+                if (character == '{')
                 {
-                    scoreMultiplier = 2;
+                    letterScoreMultiplier += 1;
                 }
-                else if (_word[i] == '[')
+                else if (character == '[')
                 {
-                    scoreMultiplier = 3;
+                    letterScoreMultiplier += 2;
                 }
-                else if (_word[i] == '}' || _word[i] == ']')
+                else if (character == '}')
                 {
-                    scoreMultiplier = 1;
+                    letterScoreMultiplier -= 1;
                 }
-
-                foreach (var characters in _alphabetScores)
+                else if (character == ']')
                 {
-                    if (characters.Key.Contains(_word[i]))
+                    letterScoreMultiplier -= 2;
+                }
+                else if (character >= 'a' && character <= 'z')
+                {
+                    foreach (var characters in _alphabetScores)
                     {
-                        sum += (characters.Value * scoreMultiplier);
+                        if (characters.Key.Contains(character))
+                        {
+                            sum += (characters.Value * letterScoreMultiplier);
+                        }
                     }
                 }
+                else
+                {
+                    return 0;
+                }
             }
-            return sum;
+            return sum * wordScoreMultiplier;
         }
     }
 }
