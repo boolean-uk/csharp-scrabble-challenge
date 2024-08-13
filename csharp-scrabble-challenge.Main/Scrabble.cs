@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,8 @@ namespace csharp_scrabble_challenge.Main
                 {'Q', 10 }, {'Z', 10 }
             };
 
+        private string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]";
+
         private string word;
 
         public Scrabble(string word)
@@ -32,6 +35,11 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
+            if (HasInvalidBrackets() || HasInvalidCharacters())
+            {
+                return 0;
+            }
+
             int score = 0;
 
             bool isDoubleWord = DoubleWordScore();
@@ -70,10 +78,37 @@ namespace csharp_scrabble_challenge.Main
             return score;
         }
 
-        private bool DoubleWordScore() => word.StartsWith("{") && word.EndsWith("}");
-        private bool TripleWordScore() => word.StartsWith("[") && word.EndsWith("]");
+        private bool DoubleWordScore()
+        {
+            return word.StartsWith("{") && word.EndsWith("}") && word.Length > 2 && word[2] != '}';
+        }
+
+        private bool TripleWordScore()
+        {
+            return word.StartsWith("[") && word.EndsWith("]") && word.Length > 2 && word[2] != ']';
+        }
+
         public List<string>? DoubleLetterScore() => GetLetterScores('{', '}');
         public List<string>? TripleLetterScore() => GetLetterScores('[', ']');
+
+        // Check for equal amount of opening and closing brackets
+        private bool HasInvalidBrackets()
+        {
+            bool isInvalid = false;
+
+            if (word.Count(c => c == '{') != word.Count(c => c == '}'))
+                isInvalid = true;
+
+            if (word.Count(c => c == '[') != word.Count(c => c == ']'))
+                isInvalid = true;
+
+            return isInvalid;
+        }
+
+        private bool HasInvalidCharacters()
+        {
+            return word.Any(c => !validChars.Contains(c));
+        }
 
         public List<string>? GetLetterScores(char openBracket, char closeBracket)
         {
