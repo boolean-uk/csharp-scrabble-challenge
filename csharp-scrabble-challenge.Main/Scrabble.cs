@@ -114,7 +114,6 @@ namespace csharp_scrabble_challenge.Main
         {
             var letterScores = new List<string>();
             int index = 0;
-            bool openFound = false;
             int openIndex = 0;
 
             if (DoubleWordScore() || TripleWordScore())
@@ -129,36 +128,17 @@ namespace csharp_scrabble_challenge.Main
 
                 if (currentChar == openBracket)
                 {
-                    if (openFound)
-                    {
-                        // Another open bracket found before closing the previous one
-                        return null;
-                    }
-
-                    openFound = true;
                     openIndex = index;
                 }
                 else if (currentChar == closeBracket)
                 {
-                    if (!openFound)
-                    {
-                        // Close bracket without a matching open bracket
-                        return null;
-                    }
-
-                    // Extract the letter inside the brackets
+                 
+                    // Extract the letter between the brackets
                     string letter = word.Substring(openIndex + 1, index - openIndex - 1);
                     letterScores.Add(letter);
-                    openFound = false;
                 }
 
                 index++;
-            }
-
-            if (openFound)
-            {
-                // Unmatched open bracket at the end
-                return null;
             }
 
             return letterScores;
