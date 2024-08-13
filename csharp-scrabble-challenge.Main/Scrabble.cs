@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -65,25 +66,13 @@ namespace csharp_scrabble_challenge.Main
         public int score()
         {
             string word = _word.ToUpper();
-            bool wrapped_in_curlies = false;
-            bool wrapped_in_squares = false;
-            if (word.StartsWith('{') && word.EndsWith('}'))
-            {
-                wrapped_in_curlies = true;
-                word = word.Substring(1, word.Length - 2);
-            }
-
-            if (word.StartsWith('[') && word.EndsWith(']'))
-            {
-                wrapped_in_squares = true;
-                word = word.Substring(1, word.Length - 2);
-            }
             int total_Score = 0;
             int i = 0;
             while (i < word.Length)
             {
                 char letter = word[i];
                 int get_letter_score = _getletterscore(letter);
+
                 if (letter == '{' && i + 2 < word.Length && word[i + 2] == '}')
                 {
                     letter = word[i + 1];
@@ -96,20 +85,24 @@ namespace csharp_scrabble_challenge.Main
                     get_letter_score = (letter) * 3;
                     i += 3;
                 }
+                else if (letter == '{' || letter=='[' || letter =='}' || letter == ']')
+                {
+                    i++;
+                    continue;
+                }
                 else
                 {
                     i++;
                 }
                 total_Score += get_letter_score;
             }
-            if (wrapped_in_curlies)
+            if (word.StartsWith('[') && word.EndsWith(']'))
+            {
+                total_Score = total_Score * 3;
+            }
+            if (word.StartsWith('{') && word.EndsWith('}'))
             {
                 total_Score = total_Score * 2;
-            }
-            if (wrapped_in_squares)
-            {
-
-                total_Score = total_Score * 3;
             }
             return total_Score;
 
