@@ -48,29 +48,54 @@ namespace csharp_scrabble_challenge.Main
             _letterPoints.Add('Q', 10);
             _letterPoints.Add('Z', 10);
 
-            
-
         }
             
+        // An atempt at the criteria from discord. Not working at all. Core tests shoulkd pass tho
         public int score()
         {
             int points = 0;
+            int tempPoints = 0;
 
+            List<int> placeTaken = new List<int>();
+
+
+            //iterate throgh each letter in the word
             foreach (char c in _word)
-            {
-                Char.ToUpper(c);
+            {   //convert all letters to uppercase to match the letters in library
+                char upperC = Char.ToUpper(c);
 
-                if (_letterPoints.ContainsKey(c)) 
+                //check to see if library contains letter
+                if (_letterPoints.ContainsKey(upperC))
                 {
-                    points += _letterPoints[c];
-                }  
-            }
-            /*
-            ///extension stuff
-            if(_word.StartsWith('[') && _word.EndsWith(']'))
+                    
+                    points += _letterPoints[upperC];
 
-           */
+                }
+                //doubles all inside the brackets
+                else if(upperC == '{')
+                {
+                    for(int i = _word[upperC]; i < _word.Length; i++)
+                    {
+                        tempPoints += _letterPoints[upperC];
+                        //add place to list so it doesn't get counted twice when the loop exits. Keeps track of wich numbers get counted here
+                        //Something like this has to work but this is not it
+                        placeTaken.Add(i);
+
+                        if (upperC == '}') 
+                        {
+                            points += (tempPoints)*2;
+                            break;
+                        } 
+                    }
+                }
+                
+            }
+
+           
             return points;
         }
+
+
     }
 }
+
