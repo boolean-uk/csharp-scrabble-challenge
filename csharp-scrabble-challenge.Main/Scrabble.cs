@@ -22,20 +22,70 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
+            bool wordmult = false;
+            bool opencCurlyBrack = false;
+            bool opencSquereBrack = false;
             if (_word == "") return 0;
             int score = 0;
             int charmultiplier = 1;
             int wordmultiplier = 1;
-            if (this._word[0] == '{' && this._word[_word.Length - 1] == '}') wordmultiplier = 2; else if (this._word[0] == '[' && this._word[_word.Length - 1] == ']') wordmultiplier = 3;
-            if (wordmultiplier != 1) { 
-                this._word = this._word.Trim('{', '}');
-                this._word = this._word.Trim('[', ']');
+            if (this._word[0] == '{' && this._word[_word.Length - 1] == '}')
+            {
+                wordmultiplier = 2;
+                wordmult = true;
+                opencCurlyBrack = true;
             }
-            Console.WriteLine(this._word);
-            foreach (char c in this._word) {
-                if (points.ContainsKey(c)) score += this.points[c]*charmultiplier;
-                if (c == '{') charmultiplier = 2; else if (c == '[') charmultiplier = 3; else charmultiplier = 1; 
+            else if (this._word[0] == '[' && this._word[_word.Length - 1] == ']')
+            {
+                wordmultiplier = 3;
+                wordmult = true;
+                opencSquereBrack= true;
             }
+            for (int i = 0; i < _word.Length; i++)
+            {
+                char c = _word[i];
+                if (points.ContainsKey(c)) score += this.points[c] * charmultiplier;
+                if (c == '{' && _word[i + 2] == '}')
+                {
+                    if (i == 0 && wordmult)
+                    {
+                        wordmult = false;
+                        wordmultiplier = 1;
+                    }
+                    charmultiplier = 2;
+                    opencCurlyBrack = true;
+                }
+                else if (c == '[' && _word[i + 2] == ']')
+                {
+                    if (i == 0 && wordmult)
+                    {
+                        wordmult = false;
+                    }
+                    charmultiplier = 3;
+                    opencSquereBrack = true;
+                }
+                else if (c == ']' && opencSquereBrack)
+                {
+                    charmultiplier = 1;
+                    opencSquereBrack = false;
+                }
+                else if (c == '}' && opencCurlyBrack)
+                {
+                    charmultiplier = 1;
+                    opencCurlyBrack = false;
+                }
+                else if (c == ']' && !opencSquereBrack && (c != _word.Length -1))
+                {
+                    return 0;
+                }
+                else if (c == '}' && !opencCurlyBrack && (c != _word.Length - 1))
+                {
+                    return 0;
+                }
+
+                    if (char.IsDigit(c)) return 0;
+            }
+
             return score*wordmultiplier;
             //throw new NotImplementedException(); //TODO: Remove this line when the code has been written
         }
