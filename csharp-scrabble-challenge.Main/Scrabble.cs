@@ -57,7 +57,7 @@ namespace csharp_scrabble_challenge.Main
             //    _word = "";
             //}
 
-            //checkModifier(word);
+            checkModifier(word);
 
             if (doubleScore)
             {
@@ -86,20 +86,20 @@ namespace csharp_scrabble_challenge.Main
         {
 
             string[] doubleCheck = word.Split('{', '}');
-            string[] tripleCheck = new string[0];
-            //string[] tripleCheck = word.Split('[', ']');
+            //string[] tripleCheck = new string[0];
+            string[] tripleCheck = word.Split('[', ']');
 
-            if (Regex.IsMatch(word, @"\[[^]]*]|[^,]+"))
-            {
-                tripleCheck = new string[3];
+            //if (Regex.IsMatch(word, @"\[[^]]*]|[^,]+"))
+            //{
+            //    tripleCheck = new string[3];
 
-                tripleCheck[0] = "[";
-                tripleCheck[1] = "a";
-                tripleCheck[2] = "]";
+            //    tripleCheck[0] = "[";
+            //    tripleCheck[1] = "a";
+            //    tripleCheck[2] = "]";
 
-            }
+            //}
 
-            if (doubleCheck.Length < 2 || tripleCheck.Length < 2)
+            if (doubleCheck.Length < 2)
             {
                 if (!Regex.IsMatch(doubleCheck[0], @" ^ [a-zA-Z{}]+$")) /*|| !Regex.IsMatch(tripleCheck[0], @"^[a-z\[\]A-Z]+$")) return*/;
                 if (!Regex.IsMatch(tripleCheck[0], @"^[a-z\[\]A-Z]+$")) return;
@@ -137,11 +137,12 @@ namespace csharp_scrabble_challenge.Main
                 string letter = item.ToString();
                 score += this.pointList[letter];
             }
+            if (doubleScore)
+            {
+                return score * 2;
+            }
             return score;
-            //if (doubleScore)
-            //{
-            //    return score * 2;
-            //}
+
             //else if (tripleScore)
             //{
             //    return score * 3;
