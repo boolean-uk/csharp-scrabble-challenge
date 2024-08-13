@@ -1,4 +1,4 @@
-using csharp_scrabble_challenge.Main;
+﻿using csharp_scrabble_challenge.Main;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[h}ous{e}]", 0)] //Error case (zero for errors)
         public void ExtendedCriteriaTests(string word, int targetScore)
         {
-            Assert.AreEqual(this.GetWordScore(word), targetScore);
+            Assert.AreEqual(targetScore, this.GetWordScore(word));
         }
 
         private int GetWordScore(string word) => new Scrabble(word).score();
