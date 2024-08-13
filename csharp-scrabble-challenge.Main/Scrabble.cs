@@ -61,16 +61,50 @@ namespace csharp_scrabble_challenge.Main
 
             int total = 0;
             int multiplier = 1;
+            List<char> pastMultipliers = new List<char>();
+
             foreach (var item in _word.ToCharArray())
-            {   
+            {
+                bool isCorrect = false;
                 if (_multipliers.ContainsKey(item))
                 {
-                    multiplier = _multipliers[item];
+                    int currentMultiplier = _multipliers[item];
+                    if (currentMultiplier > 1)
+                    {
+                        multiplier *= currentMultiplier;
+                    }
+                    else
+                    {
+                        if (item == '}')
+                        {
+                            if (pastMultipliers.Contains('{'))
+                            {
+                                multiplier /= (currentMultiplier*2);
+                                pastMultipliers.Remove('{');
+                            }
+                            else return 0;
+                        }
+                        if (item == ']')
+                        {
+                            if (pastMultipliers.Contains('['))
+                            {
+                                multiplier /= (currentMultiplier*3);
+                                pastMultipliers.Remove('[');
+                            }
+                            else return 0;
+                        }
+                    }
+                    
+                    pastMultipliers.Add(item);
+                    isCorrect = true;
+
                 }
                 if (_wordValuePairs.ContainsKey(item))
                 {
                     total += multiplier*_wordValuePairs[item];
+                    isCorrect = true;
                 }
+                if (!isCorrect) return 0;
             }
             return total;
         }
