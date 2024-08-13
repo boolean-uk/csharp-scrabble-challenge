@@ -11,6 +11,7 @@ namespace csharp_scrabble_challenge.Main
     public class Scrabble
     {
         private Dictionary<char, int> _wordValuePairs = new Dictionary<char, int>();
+        private Dictionary<char, int> _multipliers = new Dictionary<char, int>();
         private string _word;
         
         public Scrabble(string word)
@@ -44,6 +45,11 @@ namespace csharp_scrabble_challenge.Main
             _wordValuePairs.Add('q', 10);
             _wordValuePairs.Add('z', 10);
 
+            _multipliers.Add('}', 1);
+            _multipliers.Add(']', 1);
+            _multipliers.Add('{', 2);
+            _multipliers.Add('[', 3);
+
             _word = word.ToLower();
 
         }
@@ -54,11 +60,16 @@ namespace csharp_scrabble_challenge.Main
             if (_word.Count() == 0) return 0;
 
             int total = 0;
+            int multiplier = 1;
             foreach (var item in _word.ToCharArray())
-            {
+            {   
+                if (_multipliers.ContainsKey(item))
+                {
+                    multiplier = _multipliers[item];
+                }
                 if (_wordValuePairs.ContainsKey(item))
                 {
-                    total += _wordValuePairs[item];
+                    total += multiplier*_wordValuePairs[item];
                 }
             }
             return total;
