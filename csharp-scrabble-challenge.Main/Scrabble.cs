@@ -22,13 +22,15 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
-            if (_word == "")return 0;
+            if (_word == "") return 0;
             int score = 0;
             int charmultiplier = 1;
             int wordmultiplier = 1;
-            if (this._word[0] == '{') wordmultiplier = 2; else if (this._word[0] == '[') wordmultiplier = 3;
-            this._word = this._word.Trim('{', '}');
-            this._word = this._word.Trim('[', ']');
+            if (this._word[0] == '{' && this._word[_word.Length - 1] == '}') wordmultiplier = 2; else if (this._word[0] == '[' && this._word[_word.Length - 1] == ']') wordmultiplier = 3;
+            if (wordmultiplier != 1) { 
+                this._word = this._word.Trim('{', '}');
+                this._word = this._word.Trim('[', ']');
+            }
             Console.WriteLine(this._word);
             foreach (char c in this._word) {
                 if (points.ContainsKey(c)) score += this.points[c]*charmultiplier;
