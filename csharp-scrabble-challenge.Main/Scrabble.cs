@@ -26,35 +26,13 @@ namespace csharp_scrabble_challenge.Main
             List<char> eight = ['J', 'X'];
             List<char> ten = ['Q', 'Z'];
 
-            foreach (var item in one)
-            {
-                _scoreValues.Add(item, 1);
-            }
-            foreach (var item in two) 
-            {
-                _scoreValues.Add(item, 2);
-            }
-            foreach (var item in three)
-            {
-                _scoreValues.Add(item, 3);
-            }
-            foreach (var item in four)
-            {
-                _scoreValues.Add(item, 4);
-            }
-            foreach (var item in five)
-            {
-                _scoreValues.Add(item, 5);
-            }
-            foreach (var item in eight)
-            {
-                _scoreValues.Add(item, 8);
-            }
-            foreach (var item in ten)
-            {
-                _scoreValues.Add(item, 10);
-            }
-
+            foreach (var item in one) _scoreValues.Add(item, 1);
+            foreach (var item in two) _scoreValues.Add(item, 2);
+            foreach (var item in three) _scoreValues.Add(item, 3);
+            foreach (var item in four) _scoreValues.Add(item, 4);
+            foreach (var item in five) _scoreValues.Add(item, 5);
+            foreach (var item in eight) _scoreValues.Add(item, 8);
+            foreach (var item in ten) _scoreValues.Add(item, 10);
         }
 
         public int score()
