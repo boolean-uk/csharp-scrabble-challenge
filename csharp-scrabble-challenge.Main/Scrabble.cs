@@ -36,7 +36,7 @@ namespace csharp_scrabble_challenge.Main
             { 'J', 8},
             { 'X', 8},
             { 'Q', 10},
-            { 'Z', 10 }
+            { 'Z', 10}
         };
 
         private string _word;
@@ -54,31 +54,103 @@ namespace csharp_scrabble_challenge.Main
             if (_word == " ")
             {
                 return 0;
-            } 
+            }
+
             else
             {
                 string uppercase = _word.ToUpper();
                 char[] chars = uppercase.ToCharArray();
-                
+                int targetIndex = 0;
+
                 foreach (var ch in chars)
                 {
                     if (letterValue.ContainsKey(ch))
                     {
-                        wordscore += letterValue[ch];
-                    }                   
+                        if (targetIndex > 0)
+                        {
+                            if ((chars[targetIndex - 1]) == '{' && (chars[targetIndex +1] == '}'))
+                            {
+                                wordscore += (letterValue[ch] * 2);
+                            }
+                            else if ((chars[targetIndex - 1]) == '[' && (chars[targetIndex + 1] == ']'))
+                            {
+                                wordscore += (letterValue[ch] * 3);
+                            }
+                            else
+                            {
+                                wordscore += letterValue[ch];
+                            }
+                        }
+                        else
+                        {
+                            wordscore += letterValue[ch];
+                        }
+
+                    }
+                        
+                    targetIndex++;
                 }
                 //Doubleword true - ok this is a cheesy solve lmao xD
-                if (chars.Contains('}'))
+                string check = new string(chars);
+                if (check.Length > 1)
                 {
-                    wordscore = wordscore * 2;
+                    if ((check.StartsWith("{")) && (check.EndsWith("}")))
+                    {
+
+                        if (chars[check.Length - 3] == '{')
+                        {
+
+                        }
+                        else
+                        {
+                            wordscore = wordscore * 2;
+                        }
+
+                    }
+                    int curlies = 0;
+                    foreach (var ch in chars)
+                    {
+                        if ((ch == '}') || (ch == '{'))
+                        {
+                            curlies++;
+                        }
+                    }
+                    if (curlies % 2 != 0)
+                    {
+                        wordscore = 0;
+                    }
+
+                    //Tripleword true
+                    if ((check.StartsWith(']')) || (check.StartsWith('[')))
+                    {
+                        wordscore = wordscore * 3;
+                        int brackets = 0;
+                        foreach (var ch in chars)
+                        {
+                            if ((ch == ']') || (ch == '['))
+                            {
+                                brackets++;
+                            }
+                        }
+                        if (brackets % 2 != 0)
+                        {
+                            wordscore = 0;
+                        }
+
+                    }
                 }
 
-                //Tripleword true
-                if (chars.Contains(']'))
+                char [] numerals = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+                foreach (var num in numerals)
                 {
-                    wordscore = wordscore * 3;
+                    if (chars.Contains(num))
+                    {
+                        wordscore = 0;
+                    }
                 }
-                return wordscore;
+
+
+                    return wordscore;
             }
         }
     }
