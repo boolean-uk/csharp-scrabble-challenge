@@ -49,25 +49,30 @@ namespace csharp_scrabble_challenge.Main
                     letterMultiplier = 3;
                     continue;
                 }
-                else
-                {
-                    letterMultiplier = 1; // normal
-                }
                 
 
                
-                if(character == '{' || character == '}' || character == '[' || character == ']')
+                if(character == '{' ||  character == '[')
                 {
+                    
                     continue; // skip this char
                 }
+                else if(character == '}' || character == ']')
+                {
+                    letterMultiplier = 1;
+                    continue;
+                }
+
 
                 if (wordMap.ContainsKey(character)) // is there already
                 {
                     wordMap[character] += 1 * letterMultiplier * wordMultiply;
+                    letterMultiplier = 1;
                 }
                 else
                 {
                     wordMap.Add(character, 1 * letterMultiplier * wordMultiply);
+                    
                 }
             }
         }
