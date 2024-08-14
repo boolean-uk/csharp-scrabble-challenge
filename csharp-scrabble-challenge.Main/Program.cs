@@ -1,6 +1,6 @@
 ﻿using csharp_scrabble_challenge.Main;
 
-//Scrabble s = new Scrabble("");
+Scrabble s = new Scrabble("");
 Scrabble s1 = new Scrabble(" \t\n");
 Scrabble s2 = new Scrabble("a");
 Scrabble s3 = new Scrabble("f");
@@ -15,7 +15,7 @@ Scrabble s9 = new Scrabble("[dog]");
 Scrabble s10 = new Scrabble("d{o}g");
 
 
-// Console.WriteLine("Din score er: " + s.score());
+Console.WriteLine("Din score er: " + s.score());
 Console.WriteLine("Din score er: " + s1.score());
 Console.WriteLine("Din score er: " + s2.score());
 Console.WriteLine("Din score er: " + s3.score());

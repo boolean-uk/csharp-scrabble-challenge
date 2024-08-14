@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -22,6 +24,7 @@ namespace csharp_scrabble_challenge.Main
             // create a list of char of the word
             chars = word.ToUpper().ToCharArray();
 
+            Console.WriteLine(word);
         }
 
         public int score()
@@ -29,84 +32,157 @@ namespace csharp_scrabble_challenge.Main
             //TODO: score calculation code goes here
 
             // Calculate value of each letter in a dictionary
-            Dictionary<char, int> scores = new Dictionary<char, int>();
-            scores.Add('A', 1);
-            scores.Add('E', 1);
-            scores.Add('I', 1);
-            scores.Add('O', 1);
-            scores.Add('U', 1);
-            scores.Add('L', 1);
-            scores.Add('N', 1);
-            scores.Add('R', 1);
-            scores.Add('S', 1);
-            scores.Add('T', 1);
+            Dictionary<char, int> points = new Dictionary<char, int>();
+            points.Add('A', 1);
+            points.Add('E', 1);
+            points.Add('I', 1);
+            points.Add('O', 1);
+            points.Add('U', 1);
+            points.Add('L', 1);
+            points.Add('N', 1);
+            points.Add('R', 1);
+            points.Add('S', 1);
+            points.Add('T', 1);
             
-            scores.Add('D', 2);
-            scores.Add('G', 2);
+            points.Add('D', 2);
+            points.Add('G', 2);
 
-            scores.Add('B', 3);
-            scores.Add('C', 3);
-            scores.Add('M', 3);
-            scores.Add('P', 3);
+            points.Add('B', 3);
+            points.Add('C', 3);
+            points.Add('M', 3);
+            points.Add('P', 3);
 
-            scores.Add('F', 4);
-            scores.Add('H', 4);
-            scores.Add('V', 4);
-            scores.Add('W', 4);
-            scores.Add('Y', 4);
+            points.Add('F', 4);
+            points.Add('H', 4);
+            points.Add('V', 4);
+            points.Add('W', 4);
+            points.Add('Y', 4);
 
-            scores.Add('K', 5);
+            points.Add('K', 5);
 
-            scores.Add('J', 8);
-            scores.Add('X', 8);
+            points.Add('J', 8);
+            points.Add('X', 8);
 
-            scores.Add('Q', 10);
-            scores.Add('Z', 10);
+            points.Add('Q', 10);
+            points.Add('Z', 10);
 
-            if (chars.Length < 0)
+            if (chars.Length == 0)
             {
                 return 0;
             }
 
-            int points = 0;
+            int score = 0;
             int pos = 0;
 
-
-            foreach (var c in chars) {
-                foreach (var letter in scores)
+            foreach (var letter in chars)
+            {
+                foreach (var item in points)
                 {
 
-                    if (pos > 0 && c == letter.Key)
+                    if (letter == item.Key)
                     {
-                        if (chars[pos - 1] == '{' && chars[pos + 1] == '}')
+                        if (pos > 0)
                         {
-                            points += letter.Value * 2;
+                            if ((chars[pos - 1] == '{') && (chars[pos + 1] == '}'))
+                            {
+                                if (chars[pos] == item.Key)
+                                {
+                                    score += (item.Value * 2);
+                                }
+                            }
+                            else if ((chars[pos - 1] == '[') && (chars[pos + 1] == ']'))
+                            {
+                                if (chars[pos] == item.Key)
+                                {
+                                    score += (item.Value * 3);
+                                }
+                            }
                         }
-                        else if (chars[pos - 1] == '[' && chars[pos + 1] == ']')
+                        else
                         {
-                            points += letter.Value * 3;
+                            score += item.Value;
                         }
-                    }
-                    else
-                    {
-                        points += letter.Value;
+                        score += item.Value;
                     }
                 }
-                pos += 1;
+                pos++;
+            }
+
+            /*
+            foreach (var letter in chars)
+            {
+                foreach (var item in points)
+                {
+
+                    if (letter == item.Key || chars.Contains('{') || chars.Contains('['))
+                    {
+                        if (pos >= 2)
+                        {
+                            if ((chars[pos - 1] == '{') && (chars[pos + 1] == '}'))
+                            {
+                                score += item.Value * 2;
+                            }
+                            else if ((chars[pos - 1] == '[') && (chars[pos + 1] == ']'))
+                            {
+                                score += item.Value * 3;
+                            }
+                        }
+                        else { score += item.Value; }
+                    }
+                }
+            pos++;
             }
 
 
-                if (chars.First() == '{' && chars.Last() == '}')
-                {
-                    points += points;
-                }
-                if (chars.First() == '[' && chars.Last() == ']')
-                {
-                    points += points*2;
-                }
-    
+            if (chars.First() == '{' && chars.Last() == '}')
+            {
+                score = score * 2;
+            }
 
-            return points;
+            if (chars.First() == '[' && chars.Last() == ']')
+            {
+                score = score * 3;
+            }
+
+
+
+            /*
+                       foreach (var c in chars) {
+                           foreach (var letter in scores)
+                           {
+
+                               if (pos > 0 && c == letter.Key)
+                               {
+                                   if (chars[pos - 1] == '{' && chars[pos + 1] == '}')
+                                   {
+                                       points += letter.Value * 2;
+                                   }
+                                   else if (chars[pos - 1] == '[' && chars[pos + 1] == ']')
+                                   {
+                                       points += letter.Value * 3;
+                                   }
+                               }
+                               else
+                               {
+                                   points += letter.Value;
+                               }
+                           }
+                           pos += 1;
+                       }
+
+            */
+
+            if (chars.First() == '{' && chars.Last() == '}')
+            {
+                score += score;
+            }
+            if (chars.First() == '[' && chars.Last() == ']')
+            {
+                score += (score*2);
+            }
+               
+
+            return score;
         }
     }
 }
