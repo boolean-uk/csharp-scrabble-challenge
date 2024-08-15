@@ -74,111 +74,47 @@ namespace csharp_scrabble_challenge.Main
             int score = 0;
             int pos = 0;
 
+            
             foreach (var letter in chars)
             {
-                foreach (var item in points)
+               if (points.ContainsKey(letter)) {
                 {
+                    int val = points[letter];
 
-                    if (letter == item.Key)
-                    {
-                        if (pos > 0)
+                        if (pos > 0 && pos < chars.Length-1)
                         {
+                            
                             if ((chars[pos - 1] == '{') && (chars[pos + 1] == '}'))
                             {
-                                if (chars[pos] == item.Key)
-                                {
-                                    score += (item.Value * 2);
-                                }
+                                score += (val * 2);
+                              
+
                             }
                             else if ((chars[pos - 1] == '[') && (chars[pos + 1] == ']'))
                             {
-                                if (chars[pos] == item.Key)
-                                {
-                                    score += (item.Value * 3);
-                                }
+                                score += (val * 3);
+                                
+                            } else
+                            {
+                                score += val;
                             }
                         }
                         else
                         {
-                            score += item.Value;
+                            score += val;
                         }
-                        score += item.Value;
                     }
                 }
                 pos++;
             }
-
-            /*
-            foreach (var letter in chars)
-            {
-                foreach (var item in points)
-                {
-
-                    if (letter == item.Key || chars.Contains('{') || chars.Contains('['))
-                    {
-                        if (pos >= 2)
-                        {
-                            if ((chars[pos - 1] == '{') && (chars[pos + 1] == '}'))
-                            {
-                                score += item.Value * 2;
-                            }
-                            else if ((chars[pos - 1] == '[') && (chars[pos + 1] == ']'))
-                            {
-                                score += item.Value * 3;
-                            }
-                        }
-                        else { score += item.Value; }
-                    }
-                }
-            pos++;
-            }
-
-
+           
             if (chars.First() == '{' && chars.Last() == '}')
             {
-                score = score * 2;
-            }
-
-            if (chars.First() == '[' && chars.Last() == ']')
-            {
-                score = score * 3;
-            }
-
-
-
-            /*
-                       foreach (var c in chars) {
-                           foreach (var letter in scores)
-                           {
-
-                               if (pos > 0 && c == letter.Key)
-                               {
-                                   if (chars[pos - 1] == '{' && chars[pos + 1] == '}')
-                                   {
-                                       points += letter.Value * 2;
-                                   }
-                                   else if (chars[pos - 1] == '[' && chars[pos + 1] == ']')
-                                   {
-                                       points += letter.Value * 3;
-                                   }
-                               }
-                               else
-                               {
-                                   points += letter.Value;
-                               }
-                           }
-                           pos += 1;
-                       }
-
-            */
-
-            if (chars.First() == '{' && chars.Last() == '}')
-            {
-                score += score;
+                score *= 2;
             }
             if (chars.First() == '[' && chars.Last() == ']')
             {
-                score += (score*2);
+                score *= 3;
             }
                
 

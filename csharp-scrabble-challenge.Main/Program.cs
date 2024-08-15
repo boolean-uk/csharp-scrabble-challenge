@@ -26,3 +26,4 @@ Console.WriteLine("Din score er: " + s6.score());
 Console.WriteLine("Din score er: " + s7.score());
 Console.WriteLine("Din score er: " + s8.score());
 Console.WriteLine("Din score er: " + s9.score());
+Console.WriteLine("Din score er: " + s10.score());
