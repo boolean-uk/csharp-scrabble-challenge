@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace csharp_scrabble_challenge.Main
+﻿namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
         private Dictionary<char, int> _letterValues;
-        private string? _word;
+        private string _word;
 
         public Scrabble(string word)
         {
@@ -43,41 +36,43 @@ namespace csharp_scrabble_challenge.Main
             _letterValues.Add('Z', 10);
 
 
-            //TODO: do something with the word variable
+            _word = word.ToUpper();
 
-             _word = word.ToUpper();
-            
         }
 
         public int score()
         {
-            //TODO: score calculation code goes here
-            int score = 0;
             
+            int score = 0;
 
-            foreach(var letter in _word)
+            if (_word.Contains('{') && !_word.Contains('}')) { return 0; }
+            if (_word.Contains('[') && !_word.Contains(']')) { return 0; }
+
+            for (int i = 0; i < _word.Length; i++)
             {
-                if (_letterValues.ContainsKey(letter))
-                {
-                    score += _letterValues[letter];
-                    
-                }
-
-                if (letter == '{')
-                {
-
-                }   
                 
-                if (letter == '[')
+                char letter = _word[i];
+
+                if (_letterValues.ContainsKey(letter))
+                    score += _letterValues[letter];
+
+                if (letter == '{' && _word[i + 2] == '}')
                 {
-                   
+                    score += _letterValues[_word[i + 1]];
                 }
-                    
+
+                if (letter == '[' && _word[i + 2] == ']')
+                {
+                    score += _letterValues[_word[i + 1]] * 2;
+                }
+
             }
 
+            if (_word.StartsWith('{') && _word.EndsWith('}')) { return score * 2; }
+            
+            if (_word.StartsWith('[') && _word.EndsWith(']')) { return score * 3; }
+
             return score;
-            
-            
         }
     }
 }
