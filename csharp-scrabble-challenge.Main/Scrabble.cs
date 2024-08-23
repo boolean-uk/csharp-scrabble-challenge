@@ -18,7 +18,6 @@ namespace csharp_scrabble_challenge.Main
         public Scrabble(string word)
         {
             _word = word;
-            //TODO: do something with the word variable
 
             _letterPoints = new Dictionary<char, int>();
             _letterPoints.Add('A', 1);
@@ -50,48 +49,33 @@ namespace csharp_scrabble_challenge.Main
 
         }
             
-        // An atempt at the criteria from discord. Not working at all. Core tests shoulkd pass tho
         public int score()
         {
             int points = 0;
-            int tempPoints = 0;
 
-            List<int> placeTaken = new List<int>();
-
+            if (_word.Length == 0) { return 0; }
 
             //iterate throgh each letter in the word
             foreach (char c in _word)
             {   //convert all letters to uppercase to match the letters in library
                 char upperC = Char.ToUpper(c);
 
-                //check to see if library contains letter
                 if (_letterPoints.ContainsKey(upperC))
                 {
-                    
                     points += _letterPoints[upperC];
 
                 }
-                //doubles all inside the brackets
-                else if(upperC == '{')
-                {
-                    for(int i = _word[upperC]; i < _word.Length; i++)
-                    {
-                        tempPoints += _letterPoints[upperC];
-                        //add place to list so it doesn't get counted twice when the loop exits. Keeps track of wich numbers get counted here
-                        //Something like this has to work but this is not it
-                        placeTaken.Add(i);
-
-                        if (upperC == '}') 
-                        {
-                            points += (tempPoints)*2;
-                            break;
-                        } 
-                    }
-                }
-                
             }
 
-           
+            if (_word[0] == '{')
+            {
+                points *= 2;
+            }
+            if (_word[0] == '[')
+            {
+                points *= 3;
+            }
+
             return points;
         }
 
