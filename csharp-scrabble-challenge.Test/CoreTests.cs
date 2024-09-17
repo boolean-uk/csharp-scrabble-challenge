@@ -5,7 +5,7 @@ namespace csharp_scrabble_challenge.Test
 {
     [TestFixture]
     public class CoreTests
-    {        
+    {
         [TestCase("", 0)]
         [TestCase(" ", 0)]
         [TestCase(" \t\n", 0)]
