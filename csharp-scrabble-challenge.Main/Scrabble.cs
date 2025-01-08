@@ -34,6 +34,10 @@ namespace csharp_scrabble_challenge.Main
         {
             int score = 0;
             int multiplier = 1;
+            if (_word.Length == 0) {
+                return score;
+            }
+
 
             if(_word[0] == '{')
             {
@@ -43,7 +47,6 @@ namespace csharp_scrabble_challenge.Main
             {
                 multiplier = 3;
             }
-
             foreach(char letter in _word)
             {
                 
