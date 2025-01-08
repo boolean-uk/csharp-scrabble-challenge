@@ -16,6 +16,8 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("[street]", 18)] //extension triple word
         [TestCase("{quirky}", 44)] //extension double word
         [TestCase("[quirky]", 66)] //extension triple word
+        [TestCase("d{o}g", 6)] //Just to test single-letter multipliers
+        [TestCase("d[o]g", 7)]
         [TestCase("{OXyPHEnBUTaZoNE}", 82)]
         [TestCase("[OXyPHEnBUTaZoNE]", 123)]
         public void ExtendedCriteriaTests(string word, int targetScore)
