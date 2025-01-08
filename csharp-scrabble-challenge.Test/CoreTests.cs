@@ -28,6 +28,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("]{E}ous{E}[", 0)] //Error case (zero for errors)
         [TestCase("[{E}ous{E}[", 0)] //Error case (zero for errors)
         [TestCase("[{d}a[d]]", 33)] //Error case (zero for errors)
+        [TestCase("[{d}[d]]", 30)] //Error case (zero for errors)
 
         public void WordScoreTests(string word, int targetScore)
         {

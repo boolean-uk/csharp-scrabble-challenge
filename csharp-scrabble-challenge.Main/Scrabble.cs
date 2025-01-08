@@ -39,17 +39,18 @@ namespace csharp_scrabble_challenge.Main
             }
         }
 
-        private static string _checkWordMultiplier(string word, out int trippleWord, out int doubleWord)
+        private static string _checkWordMultiplier(string in_word, out int trippleWord, out int doubleWord)
         {
-            trippleWord = Regex.Count(word, $"^\\[[a-z{{}}\\]\\[]+\\]$", RegexOptions.IgnoreCase);
-            doubleWord = Regex.Count(word, $"^{{[a-z{{}}\\[\\]]+}}$", RegexOptions.IgnoreCase);
+            trippleWord = Regex.Count(in_word, $"^\\[[a-z{{}}\\]\\[]*\\]$", RegexOptions.IgnoreCase);
+            doubleWord = Regex.Count(in_word, $"^{{[a-z{{}}\\[\\]]*}}$", RegexOptions.IgnoreCase);
+            string retWord = in_word;
             if (doubleWord != 0 || trippleWord != 0)
             {
                 // If word has a multiplier, remove braces/bracets at edges
-                word = word[1..(word.Length - 1)];
+                retWord = in_word[1..(in_word.Length - 1)];
             }
             // return word without braces/brackets...
-            return word;
+            return retWord;
         }
 
         private int calc_score(string word)
