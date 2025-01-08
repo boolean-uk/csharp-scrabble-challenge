@@ -54,19 +54,31 @@ namespace csharp_scrabble_challenge.Main
             bool tripleScore = false;
 
             foreach (char c in this.word.ToCharArray()) { 
-                if (c == '[') { tripleScore = true;}
-                if (c == '{') { doubleScore = true; }
-
-                if (c == ']') { tripleScore = false; }
-                if (c == '}') { doubleScore = false; }
+                if (c == '[') { 
+                    tripleScore = true;
+                    continue;
+                }
+                else if (c == '{') { 
+                    doubleScore = true;
+                    continue;
+                }
+                else if (c == ']') { 
+                    tripleScore = false;
+                    continue;
+                }
+                else if (c == '}') { 
+                    doubleScore = false;
+                    continue;
+                }
 
                 int letterValue = 0;
-                this.letterValueDict.TryGetValue(c, out letterValue);
+                if (this.letterValueDict.TryGetValue(c, out letterValue)) {
 
-                if (tripleScore && doubleScore) { score += letterValue*6; }
-                else if (tripleScore) { score += letterValue*3; }
-                else if (doubleScore) { score += letterValue*2; }
-                else { score += letterValue; }
+                    if (tripleScore && doubleScore) { score += letterValue * 6; }
+                    else if (tripleScore) { score += letterValue * 3; }
+                    else if (doubleScore) { score += letterValue * 2; }
+                    else { score += letterValue; }
+                }
 
             }
             return score;
