@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -10,8 +11,9 @@ namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
-
         public string? word;
+        public bool doubleWord = false;
+        public bool tripleWord = false;
 
         public Dictionary<char, int> letterscore = new Dictionary<char, int>(){
             {'a', 1 }, {'e', 1 },{'i', 1 },{'o', 1 },{'u', 1 },{'l', 1 },{'n', 1 },{'r', 1 },{'s', 1 },{'t', 1 },
@@ -25,9 +27,18 @@ namespace csharp_scrabble_challenge.Main
 
         public Scrabble(string word)
         {
-            Regex reg = new Regex("^[a-zA-Z]+$");
+            if (word.StartsWith('[') && word.EndsWith(']'))
+            {
+                tripleWord = true;
+            }
 
-            if (reg.IsMatch(word))
+            else if (word.StartsWith('{') && word.EndsWith('}'))
+            {
+                doubleWord = true;
+            }
+
+
+            if (Regex.IsMatch(word, @"^[a-zA-Z]+$") || tripleWord || doubleWord)
             {
                 this.word = word;
             }
@@ -36,29 +47,33 @@ namespace csharp_scrabble_challenge.Main
             {
                 this.word = null;
             }
-        }
 
+        }
 
         public int getLetterScore(char c)
         {
-            return letterscore[Char.ToLower(c)];
+            if (c == '[' || c == ']' || c == '{' || c == '}')
+            {
+                return 0;
+            }
+            return letterscore[c];
         }
 
         public int score()
         {
-            if (this.word == null)
+            
+            if (word == null)
             {
                 return 0;
             }
-
             int score = 0;
-            foreach (char ch in word)
-            {
-                int num = getLetterScore(ch);
+            foreach(char c in word)
+            {   
+                char j = Char.ToLower(c);
+                int num = getLetterScore(j);
                 score += num;
             }
-            //TODO: score calculation code goes here
-            return score; //TODO: Remove this line when the code has been written
+            return doubleWord ? score * 2 : tripleWord ? score * 3 : score;
         }
     }
 }
