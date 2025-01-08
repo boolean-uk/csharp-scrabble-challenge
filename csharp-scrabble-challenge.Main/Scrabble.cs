@@ -21,7 +21,8 @@ namespace csharp_scrabble_challenge.Main
                 {'F', 4}, {'H', 4}, {'V', 4}, {'W', 4}, {'Y', 4},
                 {'K', 5},
                 {'J', 8}, {'X', 8},
-                {'Q', 10}, {'Z', 10}
+                {'Q', 10}, {'Z', 10},
+                {'{', 0}, {'}', 0}, {'[', 0}, {']', 0}
             };
 
         public Scrabble(string word)
@@ -34,26 +35,56 @@ namespace csharp_scrabble_challenge.Main
         {
             int score = 0;
             int multiplier = 1;
+            bool doubleBracket = false;
+            bool tripleBracket = false;
+
             if (_word.Length == 0) {
                 return score;
             }
 
-
-            if(_word[0] == '{')
+            foreach (char letter in _word)
             {
-                multiplier = 2;
-            }
-            if(_word[0] == '[')
-            {
-                multiplier = 3;
-            }
-            foreach(char letter in _word)
-            {
-                
-                if (letterValues.ContainsKey(letter))
+                // check for invalid character
+                if (!letterValues.ContainsKey(letter))
                 {
-                    score += (letterValues[letter] * multiplier);
+                    return score = 0;
                 }
+
+                // if bracket is opening, add multiplier
+                if (letter == '{' && doubleBracket == false) { 
+                    multiplier *= 2;
+                    doubleBracket = true;
+                }
+                if (letter == '[' && tripleBracket == false) {
+                    multiplier *= 3;
+                    tripleBracket = true;
+
+                }
+
+                //if bracket is closed, remove multiplier
+
+                if (letter == '}')
+                {
+                    if (!doubleBracket)
+                    {
+                        score = 0;
+                        return score;
+                    }
+                    multiplier /= 2;
+                    doubleBracket = false;
+                }
+                if (letter == ']')
+                {
+                    if (!tripleBracket)
+                    {
+                        return score = 0;
+                    }
+                    multiplier /= 3;
+                    tripleBracket = false;
+                }
+
+                score += (letterValues[letter] * multiplier);
+
             }
 
             return score;
