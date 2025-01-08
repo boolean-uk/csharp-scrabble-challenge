@@ -15,6 +15,7 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("OXyPHEnBUTaZoNE", 41)]
         [TestCase("quirky", 22)]
         [TestCase("street", 6)]
+        [TestCase("YEET", 7)]
         public void WordScoreTests(string word, int targetScore)
         {
             Assert.AreEqual(this.GetWordScore(word), targetScore);
