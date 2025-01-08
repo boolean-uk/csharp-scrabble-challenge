@@ -13,14 +13,16 @@ namespace csharp_scrabble_challenge.Main
         public Scrabble(string word)
         {
             //TODO: do something with the word variable
-            this.word = word;
+            this.word = word.ToUpper();
         }
 
         public int score()
         {
             //TODO: score calculation code goes here
-           
+
+           //set score to be zero
             int score = 0;
+            //initialise a dictionary with all characters and ther points
             Dictionary <char, int> map = new Dictionary<char, int>(){
             { 'A', 1},{ 'B', 3},{ 'C', 3},{ 'D', 2},{ 'E', 1},{ 'F', 4},
             { 'G', 2},{ 'H', 4},{ 'I', 1},{ 'J', 8},{ 'K', 5},{ 'L', 1},
@@ -28,49 +30,71 @@ namespace csharp_scrabble_challenge.Main
             { 'S', 1},{ 'T', 1},{ 'U', 1},{ 'V', 4},{ 'X', 8},{ 'Y', 4},
             { 'Z', 10},};
 
-            string newWord= word.ToUpper();
+            
           
-            for(int i = 0; i < newWord.Length; i++)
+            for(int i = 0; i < word.Length; i++)
             {
 
-                if (map.ContainsKey(newWord[i]))
+                if (map.ContainsKey(word[i]))
                 {
-                    score += map[newWord[i]];
+                    score += map[word[i]];
                 }
-                else if (!(map.ContainsKey(newWord[i])))
+                else if (!(map.ContainsKey(word[i])))
                 {
-                    if (newWord[i] == '{')
+                    if (word[i] == '{' || word[i] == '[') 
                     {
+                        int outerMulti = word[i] == '{' ? 2 : 3;
+                        //skrive expected end bracket
+                        char expectedOuterBracket= word[i] == '{' ? '}' : ']';
                         i++;
-                        List<char> list = new List<char>();
-                        while (newWord[i] != '}')
-                        {
-                            list.Add(newWord[i]);
-                            i++;
-                        }
-                        for (int j = 0; j < list.Count; j++)
-                        {
-                            int newscore = map[list[j]];
-                            score += newscore * 2;
-                        }
-                    }
-                    else if (newWord[i] == '[')
-                    {
-                        i++;
-                        List<char> list = new List<char>();
-                        while (newWord[i] != ']')
-                        {
-                            list.Add(newWord[i]);
-                            i++;
-                        }
-                        for (int j = 0; j < list.Count; j++)
-                        {
-                            int newscore = map[list[j]];
-                            score += newscore * 3;
-                        }
+                      
 
+                        while (word[i] != '}' && word[i] != ']')
+                        {
+                        
+                            if (word[i] == '{' || word[i] == '[')
+                            {
+                                int innerMulti = word[i] == '{' ? 2 : 3;
+                                char expectedInnerBracket = word[i] == '{' ? '}' : ']';
+                                i++;
+                                while (word[i] != '}' && word[i] != ']')
+                                {
+                                    if (!(map.ContainsKey(word[i]))){
+                                        return 0;
+                                    }
+                                    int mdl = map[word[i]];
+                                    //hva skal multiplieren være??
+                                    score += mdl * innerMulti * outerMulti;
+                                    i++;
 
+                                }
+                                //her kan man sjekke bracket
+                                if (expectedInnerBracket != word[i])
+                                {
+                                    return 0;
+                                }
+                                i++;
+
+                            }
+                            else {
+                                if (!(map.ContainsKey(word[i])))
+                                {
+                                    return 0;
+                                }
+                                int newscore = map[word[i]];
+                                score += newscore * outerMulti;
+                                i++;
+                        }
+                            
+                        }
+                        //her kan man sjekke bracket
+                        if (expectedOuterBracket != word[i])
+                        {
+                            return 0;
+                        }
+                       
                     }
+                   
                 }
                 
 
