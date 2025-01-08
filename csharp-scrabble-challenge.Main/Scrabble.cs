@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace csharp_scrabble_challenge.Main
@@ -20,6 +21,10 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
+            if (!isValidWord())
+            {
+                return 0;
+            }
             Dictionary<char, int> lettersToValues = new Dictionary<char, int>
         {
             { 'A', 1 }, { 'E', 1 }, { 'I', 1 }, { 'O', 1 }, { 'U', 1 }, { 'L', 1 }, { 'N', 1 }, { 'R', 1 }, { 'S', 1 }, { 'T', 1 },
@@ -35,36 +40,64 @@ namespace csharp_scrabble_challenge.Main
             bool isTripleWord = false;
             bool isDoubleLetter = false;
             bool isTripleLetter = false;
+            char previousBracket = char.MinValue;
+            bool invalid = false;
             foreach (char letter in Word)
             {
                 if (index == 0)
                 {
                     if (letter == '{')
                     {
+                        previousBracket = letter;
                         isDoubleWord = true;
+                        if (Word.ToCharArray()[index + 2] == '}')
+                        {
+                            isDoubleWord = false;
+                            isDoubleLetter = true;
+                        }
                     }
                     else if (letter == '[')
                     {
+                        previousBracket = letter;
                         isTripleWord = true;
+                        if (Word.ToCharArray()[index + 2] == ']')
+                        {
+                            isTripleWord = false;
+                            isTripleLetter = true;
+                        }
                     }
                 }
                 else 
                 {
                     if (letter == '{')
                     {
+                        previousBracket = letter;
                         isDoubleLetter = true;
                     }
                     else if (letter == '[')
                     {
+                        previousBracket = letter;
                         isTripleLetter = true;
                     }
                     else if (letter == ']')
                     {
+                        if (previousBracket != '[' && previousBracket != char.MinValue)
+                        {
+                            invalid = true;
+                            break;
+                        }
                         isTripleLetter = false;
+                        previousBracket = char.MinValue;
                     }
                     else if (letter == '}')
                     {
+                        if (previousBracket != '{' && previousBracket != char.MinValue)
+                        {
+                            invalid = true;
+                            break;
+                        }
                         isDoubleLetter = false;
+                        previousBracket = char.MinValue;
                     }
                 }
                 
@@ -79,7 +112,7 @@ namespace csharp_scrabble_challenge.Main
 
                 
             calculateDoubleAndTripleWord(isDoubleWord, isTripleWord);
-            return Score;
+            return invalid ? 0 : Score;
         }
 
         private void calculateDoubleAndTripleWord(bool isDouble, bool isTriple)
@@ -106,6 +139,12 @@ namespace csharp_scrabble_challenge.Main
                 multiplier = 3;
             }
             return multiplier;
+        }
+
+        private bool isValidWord()
+        {
+            string pattern = @"^[a-zA-Z\[\]\{\}]*$";
+            return Regex.IsMatch(Word, pattern);
         }
     }
 }
