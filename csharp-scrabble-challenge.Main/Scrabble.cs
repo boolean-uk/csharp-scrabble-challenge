@@ -1,7 +1,10 @@
-﻿namespace csharp_scrabble_challenge.Main
+﻿using System.Text.RegularExpressions;
+
+namespace csharp_scrabble_challenge.Main
 {
     public class Scrabble
     {
+        string validatorRegex = @"^[A-Za-z\[\{\]\}]+$";
         private static readonly Dictionary<char, int> letterScores = new Dictionary<char, int>
         {
             { 'A', 1 },
@@ -42,6 +45,12 @@
         // Aiming for 0(n) complexity
         public int score()
         {
+            // Any invalid string will always result in 0 points. Rules allow letters and brackets
+            if (!Regex.IsMatch(word, validatorRegex))
+            {
+                return 0;
+            }
+            
             int score = 0;
             var multiplier = 1;
             
@@ -50,19 +59,28 @@
             foreach (char letter in letters)
             {
                 var points = 0; // Letters not set in my dictionary will not give points.
-                
-                switch (letter)
+
+                try
                 {
-                    case '{':
-                        multiplier = 2;
-                        break;
-                    case '[':
-                        multiplier = 3;
-                        break;
-                    case '}':
-                    case ']':
-                        multiplier = 1;
-                        break;
+                    switch (letter)
+                    {
+                        case '{':
+                            multiplier = adjustMultiplier(multiplier, 2);
+                            break;
+                        case '[':
+                            multiplier = adjustMultiplier(multiplier, 3);
+                            break;
+                        case '}':
+                            multiplier = adjustMultiplier(multiplier, -2);
+                            break;
+                        case ']':
+                            multiplier = adjustMultiplier(multiplier, -3);
+                            break;
+                    }
+                }
+                catch
+                {
+                    return 0;
                 }
                 
                 if (letterScores.TryGetValue(letter, out points))
@@ -73,6 +91,28 @@
             }
 
             return score;
+        }
+
+        // Positive number increases multiplier. Negative number decreases it.
+        public int adjustMultiplier(int oldMultiplier, int change)
+        {
+            int newMultiplier = 0;
+            
+            if (change > 0)
+            {
+                newMultiplier = oldMultiplier * change;
+            }
+            else
+            {
+                newMultiplier = oldMultiplier / Math.Abs(change);
+            }
+            
+            if (newMultiplier < 1)
+            {
+                throw new Exception($"Invalid multiplier. ({newMultiplier})");
+            }
+
+            return newMultiplier;
         }
     }
 }
