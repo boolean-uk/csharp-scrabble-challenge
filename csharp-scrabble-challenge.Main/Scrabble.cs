@@ -41,8 +41,8 @@ namespace csharp_scrabble_challenge.Main
 
         private static string _checkWordMultiplier(string word, out int trippleWord, out int doubleWord)
         {
-            trippleWord = Regex.Count(word, $"^\\[[a-z{{}}]{{2,}}\\]$", RegexOptions.IgnoreCase);
-            doubleWord = Regex.Count(word, $"^{{[a-z\\[\\]]{{2,}}}}$", RegexOptions.IgnoreCase);
+            trippleWord = Regex.Count(word, $"^\\[[a-z{{}}\\]\\[]+\\]$", RegexOptions.IgnoreCase);
+            doubleWord = Regex.Count(word, $"^{{[a-z{{}}\\[\\]]+}}$", RegexOptions.IgnoreCase);
             if (doubleWord != 0 || trippleWord != 0)
             {
                 // If word has a multiplier, remove braces/bracets at edges
@@ -79,8 +79,7 @@ namespace csharp_scrabble_challenge.Main
             if (word.Length == 0)
                 return;
 
-            int trippleWord, doubleWord;
-            word = _checkWordMultiplier(word, out trippleWord, out doubleWord);
+            
 
             int tempScore = 0;
             string stripMultiplierWord = word;
@@ -89,14 +88,18 @@ namespace csharp_scrabble_challenge.Main
             findAndCalc_trippleLetters(word, ref tempScore, ref stripMultiplierWord);
             findAndCalc_doubleLetters(word, ref tempScore, ref stripMultiplierWord);
 
+            int trippleWord, doubleWord;
+            //word = _checkWordMultiplier(word, out trippleWord, out doubleWord);
+            word = _checkWordMultiplier(stripMultiplierWord, out trippleWord, out doubleWord);
 
             // if stripMultiplierWord contains anything but letters, then the input word was invalid
-            var invalidInputCount = Regex.Count(stripMultiplierWord, "([^a-z])", RegexOptions.IgnoreCase);
+            var invalidInputCount = Regex.Count(word, "([^a-z])", RegexOptions.IgnoreCase);
             if (invalidInputCount != 0)
                 return;
 
             // calculate score for the remaining letters and add to tempScore
-            tempScore += calc_score(stripMultiplierWord);
+            tempScore += calc_score(word);
+
 
             // Finally add any word multipliers
             if (doubleWord != 0)
