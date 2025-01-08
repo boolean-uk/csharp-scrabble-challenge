@@ -12,6 +12,7 @@ namespace csharp_scrabble_challenge.Main
 
         string _word;
         int _score;
+        char _lastBracket;
         public Scrabble(string word)
         {            
             //TODO: do something with the word variable
@@ -30,6 +31,20 @@ namespace csharp_scrabble_challenge.Main
                 {
                     _score += letterScores[item] * multiplier;
                 }
+                else if (!isBracket(item))
+                {
+                    return 0;
+                }
+                else if (isBracket(item)) {
+                    if (validateBracket(_lastBracket, item))
+                    {
+                        _lastBracket = item;
+                    }
+                    else {
+                        return 0;
+                    }
+                    
+                }
             }
             return _score;
         }
@@ -37,15 +52,37 @@ namespace csharp_scrabble_challenge.Main
         private int setMultiplier(int multiplier, char item) { 
             if(item == '{')
             {
-                return 2;
+                return 2 * multiplier;
             }else if ( item == '[')
             {
-                return 3;
+                return 3 * multiplier;
+            }
+            else if( item == ']')
+            {
+                return multiplier / 3;
+            }else if(item == '}'){
+                return multiplier / 2;
             }
             else
             {
                 return multiplier;
             }
+        }
+
+        private bool isBracket(char c) { 
+        return (c == '[' || c == ']' || c == '{' || c =='}');
+        }
+
+        private bool validateBracket(char lastBracket, char bracket)
+        {
+            if (lastBracket == '[')
+            {
+                return bracket == ']' || bracket == '{';
+            }
+            else if (lastBracket == '{') {
+                return bracket == '}' || bracket == '['; }
+            return true;
+
         }
 
 
