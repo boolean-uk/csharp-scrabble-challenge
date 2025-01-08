@@ -60,25 +60,76 @@ namespace csharp_scrabble_challenge.Main
 
         public int score()
         {
-            int totalScore = 0;
-            foreach (char c in _word)
+            if (_word.Length == 0)
             {
-                char bigC = char.ToUpper(c);
+                return 0;
+            }
+            int totalScore = 0;
+            int nextLetterScore = 0;
+
+            //init wordscaling
+            int wordscaling = 1;
+            if (_word.First() == '{' && _word.Last() == '}')
+            {
+                wordscaling = 2;
+                _word = _word.Substring(0, _word.Length - 2);
+            }
+
+            else if (_word.First() == '[' && _word.Last() == ']')
+            {
+                wordscaling = 3;
+                _word = _word.Substring(0, _word.Length - 2);
+
+            }
+            
+
+            for (int i = 0; i < _word.Length; i++)
+            {
+                nextLetterScore = 0;
+                char bigC = char.ToUpper(_word[i]);
+
+
                 if (char.IsLetter(bigC))
                 {
-                    totalScore += _letterScore.Where(x => x.Key.Contains(bigC)).FirstOrDefault().Value;
+                    nextLetterScore = _letterScore.Where(x => x.Key.Contains(bigC)).FirstOrDefault().Value;
                 }
+                else if (bigC == '{') 
+                {
+                 if ((_word.Length > i + 2))
+                    {
+                        if (_word[i+2] == '}')
+                        {
+                            bigC = char.ToUpper(_word[i+1]);
+                            nextLetterScore = _letterScore.Where(x => x.Key.Contains(bigC)).FirstOrDefault().Value * 2;
+                        }
+                    }
+ 
+                }
+
+                else if (bigC == '[')
+                {
+                    if ((_word.Length > i + 2))
+                    {
+                        if (_word[i + 2] == ']')
+                        {
+                            bigC = char.ToUpper(_word[i + 1]);
+                            nextLetterScore = _letterScore.Where(x => x.Key.Contains(bigC)).FirstOrDefault().Value * 3;
+                        }
+                    }
+                }
+
                 else
                 {
-
-
                     return 0;
                 }
                 
+                totalScore += nextLetterScore;
             }
 
-            return totalScore;
+            return totalScore * wordscaling;
         }
+
+
 
 
     }
