@@ -42,7 +42,7 @@ And to total:
 
 ## Acceptance Criteria
 
-```java
+```C#
 Scrabble s = new Scrabble("");
 s.score(); // should return 0
 
