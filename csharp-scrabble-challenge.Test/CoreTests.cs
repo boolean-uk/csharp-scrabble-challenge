@@ -15,11 +15,14 @@ namespace csharp_scrabble_challenge.Test
         [TestCase("OXyPHEnBUTaZoNE", 41)]
         [TestCase("quirky", 22)]
         [TestCase("street", 6)]
+
+
         public void WordScoreTests(string word, int targetScore)
         {
             Assert.AreEqual(this.GetWordScore(word), targetScore);
         }
 
-        private int GetWordScore(string word) => new Scrabble(word).score();
+        private int GetWordScore(string word) => new Scrabble(word).Score();
     }
 }
+
