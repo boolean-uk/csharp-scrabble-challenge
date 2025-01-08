@@ -25,25 +25,67 @@ namespace csharp_scrabble_challenge.Main
             {'[', 3 },
             {'{', 2 }
         };
+        private static Dictionary<char, char> closing = new()
+        {
+            {'[', ']' },
+            {'{', '}' }
+        };
 
         private string _word;
         private int _wordMult = 1;
+        private bool _valid;
         public Scrabble(string word)
         {
             //TODO: do something with the word variable
             _word = word.ToUpper();
-            if (word.Length > 0)
+            _valid = this.isValid(_word);
+
+            if (_valid)
             {
-                if (multiplier.ContainsKey(word[0]))
-                { 
-                    _wordMult = multiplier[word[0]];
-                    _word = _word.Substring(1);
+                char first = _word.First();
+                bool wordMult = true;
+                if (multiplier.ContainsKey(first))
+                {
+                    for (int i = 1; i < word.Length; i++)
+                    {
+                        if (closing[first] == _word[i] & i != word.Length - 1)
+                        {
+                            wordMult = false;
+                            break;
+                        }
+                    }
+                    if (wordMult)
+                    {
+                        _word = _word.Substring(1, _word.Length - 2);
+                        _wordMult = multiplier[first];
+                    }
                 }
             }
         }
 
+        private bool isValid(string word)
+        {
+            if (word.Length == 0) return false;
+            int curlyCount = 0;
+            int squareCount = 0;
+            foreach (char c in word)
+            {
+                switch (c) {
+                    case '{': curlyCount++; break;
+                    case '[': squareCount++; break;
+                    case '}': curlyCount--; break;
+                    case ']': squareCount--; break;
+                    default: 
+                        if (!charValues.ContainsKey(c)) return false;
+                        break;
+                }
+            }
+            return curlyCount == 0 & squareCount == 0;
+        }
+
         public int score()
         {
+            if (!_valid) return 0;
             int result = 0;
             int charMultiplier = 1;
             foreach (char c in _word)
