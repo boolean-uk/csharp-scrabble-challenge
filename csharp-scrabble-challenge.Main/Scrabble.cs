@@ -50,28 +50,28 @@ namespace csharp_scrabble_challenge.Main
 
             int multiplier = 1;
 
-            string extensionWord = word;
+            string multiplierWord = word;
 
-            if (extensionWord.StartsWith("[") && extensionWord.EndsWith("]"))
+            if (multiplierWord.StartsWith("[") && multiplierWord.EndsWith("]"))
 
             {
                 multiplier = 3;
-                extensionWord = extensionWord.Substring(1, extensionWord.Length - 2);
+                multiplierWord = multiplierWord.Substring(1, multiplierWord.Length - 2);
 
 
             }
 
-            else if (extensionWord.StartsWith("{") && extensionWord.EndsWith("}"))
+            else if (multiplierWord.StartsWith("{") && multiplierWord.EndsWith("}"))
             {
                 multiplier = 2; 
-                extensionWord = extensionWord.Substring(1, extensionWord.Length - 2); 
+                multiplierWord = multiplierWord.Substring(1, multiplierWord.Length - 2); 
             }
 
 
 
             int totalScore = 0;
 
-            foreach (char letter in extensionWord.ToLower())
+            foreach (char letter in multiplierWord.ToLower())
             {
 
                 string letterStr = letter.ToString();
