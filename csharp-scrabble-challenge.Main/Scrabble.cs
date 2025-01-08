@@ -62,25 +62,36 @@ namespace csharp_scrabble_challenge.Main
                     doubleScore = true;
                     continue;
                 }
-                else if (c == ']') { 
+                else if (c == ']') {
+                    //bracket wrong way
+                    if (!tripleScore) return 0;
+
                     tripleScore = false;
                     continue;
                 }
-                else if (c == '}') { 
+                else if (c == '}') {
+                    //bracket wrong way
+                    if (!doubleScore) return 0;
+
                     doubleScore = false;
                     continue;
                 }
 
                 int letterValue = 0;
-                if (this.letterValueDict.TryGetValue(c, out letterValue)) {
+                if (this.letterValueDict.TryGetValue(c, out letterValue))
+                {
 
                     if (tripleScore && doubleScore) { score += letterValue * 6; }
                     else if (tripleScore) { score += letterValue * 3; }
                     else if (doubleScore) { score += letterValue * 2; }
                     else { score += letterValue; }
                 }
+                else return 0;
 
             }
+
+
+            if (doubleScore || tripleScore) return 0;
             return score;
             //return this.word.ToUpper().Aggregate(0, (sum, c) => sum + this.letterValueDict[c]);
         }
