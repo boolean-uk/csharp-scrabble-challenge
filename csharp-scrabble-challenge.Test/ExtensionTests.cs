@@ -12,6 +12,10 @@ namespace csharp_scrabble_challenge.Test
     public class ExtensionTests
     {
 
+        [TestCase("[{h}o1s{e}]", 0)] // error case (zero for errors)
+        [TestCase("{h}ous{e}", 13)]
+        [TestCase("[{h}ous{e}]", 39)]
+        [TestCase("[h}ous{e}]", 0)] //Error case (zero for errors)
         [TestCase("{street}", 12)] //extension double word
         [TestCase("[street]", 18)] //extension triple word
         [TestCase("{quirky}", 44)] //extension double word
